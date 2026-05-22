@@ -3,15 +3,16 @@ import Link from "next/link";
 import { WorkshopCard } from "@/components/workshops/WorkshopCard";
 import { RegionFilter } from "@/components/workshops/RegionFilter";
 import { getWorkshops } from "@/lib/data/workshops";
+import { cityDisplayLabel, isCitySlug } from "@/lib/cities";
 import { regionLabel } from "@/lib/format";
 
 interface PageProps {
-  searchParams: { region?: string; q?: string };
+  searchParams: { region?: string; city?: string; q?: string };
 }
 
 export default async function WorkshopsPage({ searchParams }: PageProps) {
-  const { region, q } = searchParams;
-  let workshops = await getWorkshops(region);
+  const { region, city, q } = searchParams;
+  let workshops = await getWorkshops(region, city);
 
   if (q?.trim()) {
     const query = q.trim().toLowerCase();
@@ -26,11 +27,13 @@ export default async function WorkshopsPage({ searchParams }: PageProps) {
   }
 
   const title =
-    region && region !== "all"
-      ? `Workshops in ${regionLabel(region)}`
-      : q
-        ? `Results for “${q}”`
-        : "All workshops";
+    city && isCitySlug(city)
+      ? `Experiences in ${cityDisplayLabel(city)}`
+      : region && region !== "all"
+        ? `Experiences in ${regionLabel(region)}`
+        : q
+          ? `Results for “${q}”`
+          : "All experiences";
 
   return (
     <div className="bg-cream">

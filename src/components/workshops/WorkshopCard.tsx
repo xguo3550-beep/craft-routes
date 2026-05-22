@@ -1,14 +1,14 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Workshop } from "@/types";
-import { getWorkshopCity } from "@/lib/cities";
+import { cityLabel, getWorkshopCity } from "@/lib/cities";
 import { formatPrice } from "@/lib/format";
 import {
   regionPastelBg,
   workshopBadge,
-  workshopCityLabel,
+  workshopEmoji,
   workshopRating,
 } from "@/lib/workshop-meta";
-import { WorkshopCardImage } from "@/components/workshops/WorkshopCardImage";
 
 interface WorkshopCardProps {
   workshop: Workshop;
@@ -22,17 +22,26 @@ export function WorkshopCard({ workshop }: WorkshopCardProps) {
 
   return (
     <Link href={`/workshops/${workshop.slug}`} className="card-minglu group block">
-      <WorkshopCardImage
-        slug={workshop.slug}
-        title={workshop.title}
-        imageUrl={workshop.image_url}
-        pastelClass={pastel}
-      />
+      <div className={`relative aspect-[5/4] ${pastel} overflow-hidden`}>
+        <div className="absolute inset-3 overflow-hidden rounded-lg shadow-soft">
+          <Image
+            src={workshop.image_url}
+            alt={workshop.title}
+            fill
+            unoptimized={workshop.image_url.endsWith(".svg")}
+            className="object-cover transition duration-500 group-hover:scale-105"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+          />
+        </div>
+        <span className="absolute right-4 top-4 text-3xl opacity-90 drop-shadow-sm">
+          {workshopEmoji(workshop.slug)}
+        </span>
+      </div>
 
       <div className="p-5">
         <div className="flex items-start justify-between gap-2">
           <p className="text-xs font-semibold uppercase tracking-wider text-brand-600">
-            {workshopCityLabel(city)}
+            {cityLabel(city)}
           </p>
           {badge && (
             <span

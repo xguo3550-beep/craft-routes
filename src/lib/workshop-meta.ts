@@ -1,5 +1,3 @@
-import type { Workshop } from "@/types";
-
 const SLUG_EMOJI: Record<string, string> = {
   "bai-ethnic-tie-dye": "🧵",
   "erhai-cycling-pottery": "🚲",
@@ -24,6 +22,10 @@ const SLUG_BADGE: Record<string, { label: string; className: string }> = {
   },
 };
 
+export function workshopCoverPath(slug: string): string {
+  return `/images/workshops/${slug}.svg`;
+}
+
 export function workshopEmoji(slug: string): string {
   return SLUG_EMOJI[slug] ?? "✨";
 }
@@ -43,14 +45,4 @@ export function workshopRating(id: string): string {
 
 export function regionPastelBg(region: string): string {
   return region === "dali" ? "bg-pastel-peach" : "bg-pastel-sage";
-}
-
-import { cityLabel, type CitySlug } from "@/lib/cities";
-
-export function regionCityLabel(region: string): string {
-  return region === "dali" ? "DALI, YUNNAN" : "SICHUAN";
-}
-
-export function workshopCityLabel(city: CitySlug): string {
-  return cityLabel(city);
 }

@@ -2,39 +2,31 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-
-const categories = [
-  { value: "all", label: "All", href: "/workshops" },
-  { value: "dali", label: "Dali", href: "/workshops?region=dali" },
-  { value: "sichuan", label: "Sichuan", href: "/workshops?region=sichuan" },
-  {
-    value: "cooking",
-    label: "Cooking",
-    href: "/workshops?region=sichuan",
-  },
-  { value: "crafts", label: "Crafts", href: "/workshops?region=dali" },
-  { value: "tea", label: "Tea ceremony", href: "/workshops/shuimo-painting-pandas" },
-];
+import { CITIES } from "@/lib/cities";
 
 export function RegionFilter({ compact }: { compact?: boolean }) {
   const searchParams = useSearchParams();
-  const region = searchParams.get("region") ?? "all";
+  const city = searchParams.get("city");
+
+  const cityPills = CITIES.filter((c) => c.available).map((c) => ({
+    value: c.slug,
+    label: c.name,
+    href: c.href,
+  }));
 
   const pills = compact
-    ? categories.slice(0, 3)
-    : categories;
+    ? [{ value: "all", label: "All", href: "/workshops" }, ...cityPills.slice(0, 4)]
+    : [{ value: "all", label: "All cities", href: "/workshops" }, ...cityPills];
 
   return (
     <div className="flex flex-wrap gap-2">
       {pills.map((cat) => {
         const active =
-          cat.value === "all"
-            ? !region || region === "all"
-            : region === cat.value;
+          cat.value === "all" ? !city : city === cat.value;
 
         return (
           <Link
-            key={cat.label}
+            key={`${cat.label}-${cat.href}`}
             href={cat.href}
             className={active ? "pill-active" : "pill-inactive"}
           >

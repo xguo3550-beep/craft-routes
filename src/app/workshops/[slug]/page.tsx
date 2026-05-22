@@ -5,8 +5,8 @@ import { WorkshopBookingPanel } from "@/components/workshops/WorkshopBookingPane
 import { getWorkshopBySlug } from "@/lib/data/workshops";
 import { getWorkshopDetailExtra } from "@/lib/workshop-detail-content";
 import { formatPrice, regionLabel } from "@/lib/format";
+import { cityDisplayLabel, getWorkshopCity } from "@/lib/cities";
 import {
-  regionCityLabel,
   workshopEmoji,
   workshopRating,
 } from "@/lib/workshop-meta";
@@ -33,7 +33,8 @@ export default async function WorkshopDetailPage({ params }: PageProps) {
 
   const extra = getWorkshopDetailExtra(slug);
   const rating = workshopRating(workshop.id);
-  const cityLine = regionCityLabel(workshop.region);
+  const citySlug = getWorkshopCity(slug, workshop.region);
+  const cityLine = cityDisplayLabel(citySlug).toUpperCase();
 
   return (
     <div className="bg-cream pb-20">

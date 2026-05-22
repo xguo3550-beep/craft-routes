@@ -124,15 +124,6 @@ export function CheckoutForm({ workshop, session, guests }: CheckoutFormProps) {
         </div>
       </section>
 
-      <section>
-        <h2 className="font-display text-lg font-bold text-ink">Payment</h2>
-        <p className="mt-2 text-sm text-muted">
-          {process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-            ? "You'll complete payment securely on the next step."
-            : "Demo mode: no card required. You'll go straight to confirmation."}
-        </p>
-      </section>
-
       {error && (
         <p className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700 ring-1 ring-red-200">
           {error}

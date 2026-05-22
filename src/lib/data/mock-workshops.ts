@@ -1,6 +1,6 @@
 import type { Workshop, WorkshopSession, WorkshopWithSessions } from "@/types";
 import { getWorkshopCity, isCitySlug, type CitySlug } from "@/lib/cities";
-import { workshopCoverPath } from "@/lib/workshop-images";
+import { workshopCoverPath } from "@/lib/workshop-meta";
 
 const now = new Date();
 

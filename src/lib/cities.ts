@@ -5,15 +5,13 @@ export type CitySlug =
   | "chengdu"
   | "emeishan"
   | "kunming"
-  | "lijiang"
-  | "jingdezhen"
-  | "shanghai"
-  | "beijing";
+  | "lijiang";
 
 export interface CityInfo {
   slug: CitySlug;
   name: string;
-  region: "dali" | "sichuan" | "other";
+  subtitle: string;
+  region: "dali" | "sichuan";
   icon: string;
   experienceCount: string;
   tags: string[];
@@ -21,7 +19,6 @@ export interface CityInfo {
   available: boolean;
 }
 
-/** Which city each workshop is hosted in */
 export const WORKSHOP_CITY: Record<string, CitySlug> = {
   "bai-ethnic-tie-dye": "xizhou",
   "erhai-cycling-pottery": "dali",
@@ -35,6 +32,7 @@ export const CITIES: CityInfo[] = [
   {
     slug: "dali",
     name: "Dali",
+    subtitle: "Dali, Yunnan",
     region: "dali",
     icon: "🏔️",
     experienceCount: "2 experiences",
@@ -45,6 +43,7 @@ export const CITIES: CityInfo[] = [
   {
     slug: "xizhou",
     name: "Xizhou",
+    subtitle: "Xizhou, Dali",
     region: "dali",
     icon: "🧵",
     experienceCount: "1 experience",
@@ -55,6 +54,7 @@ export const CITIES: CityInfo[] = [
   {
     slug: "nuodeng",
     name: "Nuodeng",
+    subtitle: "Nuodeng, Yunnan",
     region: "dali",
     icon: "🧂",
     experienceCount: "1 experience",
@@ -65,6 +65,7 @@ export const CITIES: CityInfo[] = [
   {
     slug: "chengdu",
     name: "Chengdu",
+    subtitle: "Chengdu, Sichuan",
     region: "sichuan",
     icon: "🐼",
     experienceCount: "2 experiences",
@@ -75,6 +76,7 @@ export const CITIES: CityInfo[] = [
   {
     slug: "emeishan",
     name: "Emeishan",
+    subtitle: "Emeishan, Sichuan",
     region: "sichuan",
     icon: "🍵",
     experienceCount: "1 experience",
@@ -85,6 +87,7 @@ export const CITIES: CityInfo[] = [
   {
     slug: "kunming",
     name: "Kunming",
+    subtitle: "Kunming, Yunnan",
     region: "dali",
     icon: "🌸",
     experienceCount: "Coming 2025",
@@ -95,6 +98,7 @@ export const CITIES: CityInfo[] = [
   {
     slug: "lijiang",
     name: "Lijiang",
+    subtitle: "Lijiang, Yunnan",
     region: "dali",
     icon: "🏯",
     experienceCount: "Coming 2025",
@@ -102,65 +106,20 @@ export const CITIES: CityInfo[] = [
     href: "/cities",
     available: false,
   },
-  {
-    slug: "jingdezhen",
-    name: "Jingdezhen",
-    region: "other",
-    icon: "🏺",
-    experienceCount: "Coming 2025",
-    tags: ["Porcelain", "Kilns"],
-    href: "/cities",
-    available: false,
-  },
-  {
-    slug: "shanghai",
-    name: "Shanghai",
-    region: "other",
-    icon: "🏙️",
-    experienceCount: "Coming 2025",
-    tags: ["Cooking", "Markets"],
-    href: "/cities",
-    available: false,
-  },
-  {
-    slug: "beijing",
-    name: "Beijing",
-    region: "other",
-    icon: "🏯",
-    experienceCount: "Coming 2025",
-    tags: ["Hutongs", "Calligraphy"],
-    href: "/cities",
-    available: false,
-  },
 ];
 
 export function getWorkshopCity(slug: string, region: string): CitySlug {
-  return (
-    WORKSHOP_CITY[slug] ??
-    (region === "dali" ? "dali" : "chengdu")
-  );
+  return WORKSHOP_CITY[slug] ?? (region === "dali" ? "dali" : "chengdu");
 }
 
 export function cityLabel(slug: CitySlug): string {
   const city = CITIES.find((c) => c.slug === slug);
-  if (city) return city.name.toUpperCase();
-  return slug.toUpperCase();
+  return city ? city.name.toUpperCase() : slug.toUpperCase();
 }
 
 export function cityDisplayLabel(slug: CitySlug): string {
-  const labels: Record<CitySlug, string> = {
-    dali: "Dali, Yunnan",
-    xizhou: "Xizhou, Dali",
-    nuodeng: "Nuodeng, Yunnan",
-    chengdu: "Chengdu, Sichuan",
-    emeishan: "Emeishan, Sichuan",
-    kunming: "Kunming, Yunnan",
-    lijiang: "Lijiang, Yunnan",
-    jingdezhen: "Jingdezhen, Jiangxi",
-    shanghai: "Shanghai",
-    beijing: "Beijing",
-  };
-  return labels[slug] ?? slug;
+  const city = CITIES.find((c) => c.slug === slug);
+  return city?.subtitle ?? slug;
 }
 
 export function isCitySlug(value: string): value is CitySlug {

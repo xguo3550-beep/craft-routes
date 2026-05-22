@@ -1,39 +1,28 @@
 import Link from "next/link";
-
-const cities = [
-  {
-    slug: "dali",
-    name: "Dali, Yunnan",
-    icon: "🏔️",
-    count: "4 experiences",
-    tags: ["Tie-dye", "Cycling", "Village hikes"],
-    href: "/workshops?region=dali",
-  },
-  {
-    slug: "sichuan",
-    name: "Sichuan",
-    icon: "🐼",
-    count: "2 experiences",
-    tags: ["Hotpot", "Ink painting", "Tea"],
-    href: "/workshops?region=sichuan",
-  },
-];
+import { CITIES } from "@/lib/cities";
 
 export const metadata = {
   title: "Cities · Craft Routes",
-  description: "Workshops in Dali, Yunnan and Sichuan.",
+  description: "Workshops across Dali, Yunnan, Sichuan, and more regions in China.",
 };
 
 export default function CitiesPage() {
+  const live = CITIES.filter((c) => c.available);
+  const coming = CITIES.filter((c) => !c.available);
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <h1 className="font-display text-3xl font-bold text-ink">Regions</h1>
+      <h1 className="font-display text-3xl font-bold text-ink">Cities</h1>
       <p className="mt-2 text-muted">
-        Experiences currently available in Dali, Yunnan and Sichuan.
+        Experiences in {live.length} cities across Yunnan and Sichuan — with more
+        regions opening soon.
       </p>
 
-      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {cities.map((city) => (
+      <h2 className="mt-10 text-sm font-semibold uppercase tracking-wider text-brand-600">
+        Book now
+      </h2>
+      <div className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {live.map((city) => (
           <Link
             key={city.slug}
             href={city.href}
@@ -45,7 +34,7 @@ export default function CitiesPage() {
             <h2 className="mt-4 font-display text-xl font-bold text-ink group-hover:text-brand-700">
               {city.name}
             </h2>
-            <p className="mt-1 text-sm text-muted">{city.count}</p>
+            <p className="mt-1 text-sm text-muted">{city.experienceCount}</p>
             <div className="mt-4 flex flex-wrap gap-2">
               {city.tags.map((tag) => (
                 <span
@@ -58,17 +47,36 @@ export default function CitiesPage() {
             </div>
           </Link>
         ))}
+      </div>
 
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-line bg-cream/50 p-6 text-center">
-          <span className="text-2xl" aria-hidden>
-            📍
-          </span>
-          <p className="mt-3 font-medium text-muted">More coming</p>
-          <p className="mt-1 text-sm text-muted">Chengdu · Lijiang · Jingdezhen</p>
-          <span className="mt-3 rounded-full bg-line px-3 py-1 text-xs font-medium text-muted">
-            2025
-          </span>
-        </div>
+      <h2 className="mt-14 text-sm font-semibold uppercase tracking-wider text-muted">
+        More coming
+      </h2>
+      <div className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {coming.map((city) => (
+          <div
+            key={city.slug}
+            className="flex flex-col rounded-xl border border-dashed border-line bg-cream/50 p-6"
+          >
+            <span className="text-3xl opacity-70" aria-hidden>
+              {city.icon}
+            </span>
+            <h2 className="mt-4 font-display text-lg font-bold text-muted">
+              {city.name}
+            </h2>
+            <p className="mt-1 text-sm text-muted">{city.experienceCount}</p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {city.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded-full border border-line px-3 py-1 text-xs text-muted"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
