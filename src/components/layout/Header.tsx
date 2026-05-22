@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { HeaderAuth } from "@/components/layout/HeaderAuth";
 
 const navLinks = [
   { href: "/", label: "Home", match: (p: string) => p === "/" },
@@ -44,9 +45,7 @@ export function Header() {
               </Link>
             );
           })}
-          <Link href="/workshops" className="btn-primary !rounded-lg !px-5 !py-2.5 text-sm">
-            Book now
-          </Link>
+          <HeaderAuth />
         </nav>
 
         <button
@@ -88,6 +87,12 @@ export function Header() {
                 {link.label}
               </Link>
             ))}
+            <Link href="/login" className="rounded-lg px-3 py-2 text-sm font-medium text-ink hover:bg-cream" onClick={() => setOpen(false)}>
+              Sign in
+            </Link>
+            <Link href="/signup" className="rounded-lg px-3 py-2 text-sm font-medium text-brand-600 hover:bg-cream" onClick={() => setOpen(false)}>
+              Sign up
+            </Link>
             <Link
               href="/workshops"
               className="btn-primary mt-2 text-center"

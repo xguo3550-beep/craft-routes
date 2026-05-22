@@ -3,8 +3,11 @@ import { getSessionWithWorkshop } from "@/lib/data/workshops";
 import { buildBookingEmailDetails } from "@/lib/email/build-booking-email";
 import { sendBookingConfirmationEmail } from "@/lib/email/send-booking-confirmation";
 import { formatDate, formatPrice, formatTime, regionLabel } from "@/lib/format";
+import { getCurrentUser } from "@/lib/auth/current-user";
+import { demoUpsertBooking } from "@/lib/auth/demo-store";
 import { createServerClient } from "@/lib/supabase/server";
 import { getStripe } from "@/lib/stripe";
+import type { Booking } from "@/types";
 
 function successUrl(
   appUrl: string,
@@ -17,7 +20,8 @@ function successUrl(
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { sessionId, guestName, guestEmail, guestsCount } = body;
+    const { sessionId, guestName, guestEmail, guestsCount, notes } = body;
+    const currentUser = await getCurrentUser();
 
     if (!sessionId || !guestName || !guestEmail || !guestsCount) {
       return NextResponse.json(
@@ -51,19 +55,23 @@ export async function POST(request: NextRequest) {
 
     let bookingId = `mock-${Date.now()}`;
 
+    const bookingPayload = {
+      session_id: sessionId,
+      workshop_id: workshop.id,
+      guest_name: guestName,
+      guest_email: guestEmail,
+      guests_count: guestsCount,
+      total_cents: totalCents,
+      currency: workshop.currency,
+      status: "pending" as const,
+      customer_user_id: currentUser?.role === "customer" ? currentUser.id : null,
+      notes: notes ? String(notes) : null,
+    };
+
     if (supabase) {
       const { data: booking, error } = await supabase
         .from("bookings")
-        .insert({
-          session_id: sessionId,
-          workshop_id: workshop.id,
-          guest_name: guestName,
-          guest_email: guestEmail,
-          guests_count: guestsCount,
-          total_cents: totalCents,
-          currency: workshop.currency,
-          status: "pending",
-        })
+        .insert(bookingPayload)
         .select("id")
         .single();
 
@@ -72,6 +80,23 @@ export async function POST(request: NextRequest) {
       } else if (booking) {
         bookingId = booking.id;
       }
+    } else {
+      const demoBooking: Booking & { customer_user_id?: string; notes?: string } = {
+        id: bookingId,
+        session_id: sessionId,
+        workshop_id: workshop.id,
+        guest_name: guestName,
+        guest_email: guestEmail,
+        guests_count: guestsCount,
+        total_cents: totalCents,
+        currency: workshop.currency,
+        status: "paid",
+        stripe_checkout_session_id: null,
+        created_at: new Date().toISOString(),
+        customer_user_id: currentUser?.id,
+        notes: notes ? String(notes) : undefined,
+      };
+      demoUpsertBooking(demoBooking);
     }
 
     const emailDetails = buildBookingEmailDetails({

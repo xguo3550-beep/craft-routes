@@ -1,4 +1,9 @@
 import type { Workshop, WorkshopSession, WorkshopWithSessions } from "@/types";
+import {
+  demoAllHostWorkshopsForPublic,
+  demoAllSessions,
+  demoSessionsForWorkshop,
+} from "@/lib/auth/demo-store";
 import { getWorkshopCity, isCitySlug, type CitySlug } from "@/lib/cities";
 import { workshopCoverPath } from "@/lib/workshop-meta";
 
@@ -264,8 +269,12 @@ const MOCK_SESSIONS: Record<string, WorkshopSession[]> = {
   })),
 };
 
+function allMockWorkshops(): Workshop[] {
+  return [...MOCK_WORKSHOPS, ...demoAllHostWorkshopsForPublic()];
+}
+
 export function getMockWorkshops(region?: string, city?: string): Workshop[] {
-  let list = MOCK_WORKSHOPS;
+  let list = allMockWorkshops();
 
   if (city && isCitySlug(city)) {
     list = list.filter(
@@ -281,21 +290,31 @@ export function getMockWorkshops(region?: string, city?: string): Workshop[] {
 export function getMockWorkshopBySlug(
   slug: string
 ): WorkshopWithSessions | null {
-  const workshop = MOCK_WORKSHOPS.find((w) => w.slug === slug);
+  const workshop = allMockWorkshops().find((w) => w.slug === slug);
   if (!workshop) return null;
-  return {
-    ...workshop,
-    sessions: MOCK_SESSIONS[workshop.id] ?? [],
-  };
+  const seeded = MOCK_SESSIONS[workshop.id] ?? [];
+  const hosted = demoSessionsForWorkshop(workshop.id);
+  const sessions = [...seeded, ...hosted].sort((a, b) =>
+    a.starts_at.localeCompare(b.starts_at)
+  );
+  return { ...workshop, sessions };
 }
 
 export function getMockSession(
   sessionId: string
 ): (WorkshopSession & { workshop: Workshop }) | null {
-  for (const workshop of MOCK_WORKSHOPS) {
-    const sessions = MOCK_SESSIONS[workshop.id] ?? [];
+  for (const workshop of allMockWorkshops()) {
+    const sessions = [
+      ...(MOCK_SESSIONS[workshop.id] ?? []),
+      ...demoSessionsForWorkshop(workshop.id),
+    ];
     const session = sessions.find((s) => s.id === sessionId);
     if (session) return { ...session, workshop };
+  }
+  const demoSess = demoAllSessions().find((s) => s.id === sessionId);
+  if (demoSess) {
+    const workshop = allMockWorkshops().find((w) => w.id === demoSess.workshop_id);
+    if (workshop) return { ...demoSess, workshop };
   }
   return null;
 }

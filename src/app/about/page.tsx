@@ -113,9 +113,17 @@ export default function AboutPage() {
             Are you a chef, artist, or craftsperson in Dali or Sichuan? Travel agents
             welcome too.
           </p>
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
+            <Link href="/signup?role=host" className="btn-primary">
+              Sign up as a host
+            </Link>
+            <Link href="/signup?role=customer" className="btn-secondary">
+              Sign up as a guest
+            </Link>
+          </div>
           <a
             href="mailto:hello@craftroutes.com"
-            className="btn-primary mt-6 inline-block"
+            className="mt-4 inline-block text-sm font-medium text-brand-600 hover:underline"
           >
             Get in touch
           </a>

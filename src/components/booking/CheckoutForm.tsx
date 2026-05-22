@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Workshop, WorkshopSession } from "@/types";
 import { formatDate, formatPrice, formatTime } from "@/lib/format";
 
@@ -18,6 +18,20 @@ export function CheckoutForm({ workshop, session, guests }: CheckoutFormProps) {
   const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch("/api/auth/me")
+      .then((r) => (r.ok ? r.json() : { user: null }))
+      .then((d) => {
+        if (d.user?.role === "customer") {
+          const parts = d.user.fullName.split(" ");
+          setFirstName(parts[0] ?? "");
+          setLastName(parts.slice(1).join(" ") ?? "");
+          setEmail(d.user.email);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const totalCents = workshop.price_cents * guests;
   const guestName = `${firstName.trim()} ${lastName.trim()}`.trim();

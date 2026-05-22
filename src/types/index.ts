@@ -22,6 +22,7 @@ export interface Workshop {
   host_bio: string;
   language: string;
   featured: boolean;
+  host_user_id?: string | null;
   created_at: string;
 }
 
@@ -45,7 +46,10 @@ export interface Booking {
   currency: string;
   status: BookingStatus;
   stripe_checkout_session_id: string | null;
+  customer_user_id?: string | null;
+  notes?: string | null;
   created_at: string;
+  updated_at?: string;
 }
 
 export interface WorkshopWithSessions extends Workshop {
