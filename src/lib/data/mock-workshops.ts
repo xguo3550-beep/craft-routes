@@ -64,10 +64,10 @@ export const MOCK_WORKSHOPS: Workshop[] = [
     price_cents: 9500,
     currency: "usd",
     image_url:
-      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80",
+      "https://images.unsplash.com/photo-1541625602330-2277a93c8612?w=1200&q=80",
     gallery_urls: [
-      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
-      "https://images.unsplash.com/photo-1610701596007-d2b0fd7d7613?w=800&q=80",
+      "https://images.unsplash.com/photo-1470071459605-3b5ec3a8b698?w=800&q=80",
+      "https://images.unsplash.com/photo-1578749050140-84644a03c902?w=800&q=80",
     ],
     highlights: [
       "E-bike included",
