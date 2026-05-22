@@ -1,32 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const navLinks = [
-  { href: "/", label: "Home", match: "home" as const },
-  { href: "/workshops", label: "Workshops", match: "workshops" as const },
-  { href: "/workshops?region=dali", label: "Dali", match: "dali" as const },
-  { href: "/workshops?region=sichuan", label: "Sichuan", match: "sichuan" as const },
+  { href: "/", label: "Home", match: (p: string) => p === "/" },
+  {
+    href: "/workshops",
+    label: "Experiences",
+    match: (p: string) => p.startsWith("/workshops") || p.startsWith("/booking"),
+  },
+  { href: "/cities", label: "Cities", match: (p: string) => p === "/cities" },
+  { href: "/about", label: "About", match: (p: string) => p === "/about" },
 ];
 
 export function Header() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const region = searchParams.get("region");
   const [open, setOpen] = useState(false);
-
-  function isActive(match: string) {
-    if (match === "home") return pathname === "/";
-    if (match === "workshops")
-      return pathname.startsWith("/workshops") && !region;
-    if (match === "dali")
-      return pathname.startsWith("/workshops") && region === "dali";
-    if (match === "sichuan")
-      return pathname.startsWith("/workshops") && region === "sichuan";
-    return false;
-  }
 
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-white/95 backdrop-blur-sm">
@@ -37,7 +28,7 @@ export function Header() {
 
         <nav className="hidden items-center gap-8 md:flex">
           {navLinks.map((link) => {
-            const active = isActive(link.match);
+            const active = link.match(pathname);
             return (
               <Link
                 key={link.href}
@@ -53,7 +44,7 @@ export function Header() {
               </Link>
             );
           })}
-          <Link href="/workshops" className="btn-primary !rounded-lg !py-2.5 !px-5 text-sm">
+          <Link href="/workshops" className="btn-primary !rounded-lg !px-5 !py-2.5 text-sm">
             Book now
           </Link>
         </nav>
@@ -66,9 +57,19 @@ export function Header() {
         >
           <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             {open ? (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             ) : (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
             )}
           </svg>
         </button>

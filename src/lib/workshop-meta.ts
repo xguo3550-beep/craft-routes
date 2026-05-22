@@ -45,6 +45,12 @@ export function regionPastelBg(region: string): string {
   return region === "dali" ? "bg-pastel-peach" : "bg-pastel-sage";
 }
 
+import { cityLabel, type CitySlug } from "@/lib/cities";
+
 export function regionCityLabel(region: string): string {
   return region === "dali" ? "DALI, YUNNAN" : "SICHUAN";
+}
+
+export function workshopCityLabel(city: CitySlug): string {
+  return cityLabel(city);
 }

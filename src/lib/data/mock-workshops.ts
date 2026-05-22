@@ -1,4 +1,6 @@
 import type { Workshop, WorkshopSession, WorkshopWithSessions } from "@/types";
+import { getWorkshopCity, isCitySlug, type CitySlug } from "@/lib/cities";
+import { workshopCoverPath } from "@/lib/workshop-images";
 
 const now = new Date();
 
@@ -24,12 +26,8 @@ export const MOCK_WORKSHOPS: Workshop[] = [
     max_participants: 10,
     price_cents: 6800,
     currency: "usd",
-    image_url:
-      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80",
-    gallery_urls: [
-      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80",
-      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&q=80",
-    ],
+    image_url: workshopCoverPath("bai-ethnic-tie-dye"),
+    gallery_urls: [],
     highlights: [
       "Natural indigo dyes",
       "Take home your creation",
@@ -63,12 +61,8 @@ export const MOCK_WORKSHOPS: Workshop[] = [
     max_participants: 8,
     price_cents: 9500,
     currency: "usd",
-    image_url:
-      "https://images.unsplash.com/photo-1541625602330-2277a93c8612?w=1200&q=80",
-    gallery_urls: [
-      "https://images.unsplash.com/photo-1470071459605-3b5ec3a8b698?w=800&q=80",
-      "https://images.unsplash.com/photo-1578749050140-84644a03c902?w=800&q=80",
-    ],
+    image_url: workshopCoverPath("erhai-cycling-pottery"),
+    gallery_urls: [],
     highlights: [
       "E-bike included",
       "Lakeside scenery",
@@ -102,11 +96,8 @@ export const MOCK_WORKSHOPS: Workshop[] = [
     max_participants: 12,
     price_cents: 7500,
     currency: "usd",
-    image_url:
-      "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=1200&q=80",
-    gallery_urls: [
-      "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=800&q=80",
-    ],
+    image_url: workshopCoverPath("sichuan-hotpot-cooking"),
+    gallery_urls: [],
     highlights: [
       "Home kitchen experience",
       "Recipe cards to take home",
@@ -139,11 +130,8 @@ export const MOCK_WORKSHOPS: Workshop[] = [
     max_participants: 10,
     price_cents: 12800,
     currency: "usd",
-    image_url:
-      "https://images.unsplash.com/photo-1563492065599-3520f775eeed?w=1200&q=80",
-    gallery_urls: [
-      "https://images.unsplash.com/photo-1563492065599-3520f775eeed?w=800&q=80",
-    ],
+    image_url: workshopCoverPath("shuimo-painting-pandas"),
+    gallery_urls: [],
     highlights: [
       "Ink painting masterclass",
       "Panda base entry included",
@@ -176,11 +164,8 @@ export const MOCK_WORKSHOPS: Workshop[] = [
     max_participants: 8,
     price_cents: 8900,
     currency: "usd",
-    image_url:
-      "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=1200&q=80",
-    gallery_urls: [
-      "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=800&q=80",
-    ],
+    image_url: workshopCoverPath("tea-ceremony-mount-emei"),
+    gallery_urls: [],
     highlights: [
       "Mount Emei setting",
       "Gongfu ceremony",
@@ -212,11 +197,8 @@ export const MOCK_WORKSHOPS: Workshop[] = [
     max_participants: 10,
     price_cents: 11000,
     currency: "usd",
-    image_url:
-      "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=1200&q=80",
-    gallery_urls: [
-      "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=800&q=80",
-    ],
+    image_url: workshopCoverPath("nuodeng-salt-well-hike"),
+    gallery_urls: [],
     highlights: [
       "Off-the-beaten-path",
       "Living salt wells",
@@ -282,9 +264,18 @@ const MOCK_SESSIONS: Record<string, WorkshopSession[]> = {
   })),
 };
 
-export function getMockWorkshops(region?: string): Workshop[] {
-  if (!region || region === "all") return MOCK_WORKSHOPS;
-  return MOCK_WORKSHOPS.filter((w) => w.region === region);
+export function getMockWorkshops(region?: string, city?: string): Workshop[] {
+  let list = MOCK_WORKSHOPS;
+
+  if (city && isCitySlug(city)) {
+    list = list.filter(
+      (w) => getWorkshopCity(w.slug, w.region) === (city as CitySlug)
+    );
+  } else if (region && region !== "all") {
+    list = list.filter((w) => w.region === region);
+  }
+
+  return list;
 }
 
 export function getMockWorkshopBySlug(

@@ -1,4 +1,5 @@
 import { createServerClient } from "@/lib/supabase/server";
+import { getWorkshopCity, isCitySlug } from "@/lib/cities";
 import {
   getMockWorkshopBySlug,
   getMockWorkshops,
@@ -6,11 +7,21 @@ import {
 } from "@/lib/data/mock-workshops";
 import type { Workshop, WorkshopWithSessions, WorkshopSession } from "@/types";
 
-export async function getWorkshops(region?: string): Promise<Workshop[]> {
+function filterByCity(workshops: Workshop[], city: string): Workshop[] {
+  if (!isCitySlug(city)) return workshops;
+  return workshops.filter(
+    (w) => getWorkshopCity(w.slug, w.region) === city
+  );
+}
+
+export async function getWorkshops(
+  region?: string,
+  city?: string
+): Promise<Workshop[]> {
   const supabase = createServerClient();
 
   if (!supabase) {
-    return getMockWorkshops(region);
+    return getMockWorkshops(region, city);
   }
 
   let query = supabase.from("workshops").select("*").order("featured", { ascending: false });
@@ -21,11 +32,17 @@ export async function getWorkshops(region?: string): Promise<Workshop[]> {
 
   const { data, error } = await query;
 
+  let workshops: Workshop[];
   if (error || !data?.length) {
-    return getMockWorkshops(region);
+    workshops = getMockWorkshops(region, city);
+  } else {
+    workshops = data as Workshop[];
+    if (city) {
+      workshops = filterByCity(workshops, city);
+    }
   }
 
-  return data as Workshop[];
+  return workshops;
 }
 
 export async function getFeaturedWorkshops(): Promise<Workshop[]> {

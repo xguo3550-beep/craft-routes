@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { getWorkshopDetailExtra } from "@/lib/workshop-detail-content";
 
 interface BookingSuccessContentProps {
   bookingId?: string;
@@ -12,6 +13,14 @@ interface BookingSuccessContentProps {
   sessionId?: string;
   guestName?: string;
   guestsCount?: string;
+  workshopTitle?: string;
+  workshopSlug?: string;
+  sessionDate?: string;
+  sessionTime?: string;
+  location?: string;
+  region?: string;
+  total?: string;
+  hostName?: string;
 }
 
 export function BookingSuccessContent({
@@ -23,6 +32,14 @@ export function BookingSuccessContent({
   sessionId,
   guestName,
   guestsCount,
+  workshopTitle,
+  workshopSlug,
+  sessionDate,
+  sessionTime,
+  location,
+  region,
+  total,
+  hostName,
 }: BookingSuccessContentProps) {
   const [emailSent, setEmailSent] = useState(
     emailSentParam === "true" ? true : emailSentParam === "false" ? false : null
@@ -30,6 +47,8 @@ export function BookingSuccessContent({
   const [emailPending, setEmailPending] = useState(
     payment === "stripe" && emailSentParam !== "true"
   );
+
+  const extra = workshopSlug ? getWorkshopDetailExtra(workshopSlug) : null;
 
   useEffect(() => {
     if (payment !== "stripe" || emailSent === true || emailSent === false) {
@@ -85,93 +104,152 @@ export function BookingSuccessContent({
     emailSent,
   ]);
 
-  const reference = bookingId;
+  const hostMessage = hostName
+    ? `${hostName.split(" ")[0] ?? hostName} will be in touch within 24 hours with the full address and any last details.`
+    : "Your host will be in touch within 24 hours with the full address and any last details.";
 
   return (
-    <div className="mx-auto max-w-lg px-4 py-20 text-center sm:px-6">
-      <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-100 text-3xl">
-        ✓
-      </div>
-      <h1 className="mt-6 font-display text-3xl font-bold text-ink">
-        Booking confirmed!
-      </h1>
-
-      {emailSent === true && email && (
-        <p className="mt-4 text-muted">
-          We&apos;ve sent a confirmation email to{" "}
-          <span className="font-medium text-ink">{email}</span> with your
-          meeting point, what to bring, and your host&apos;s details.
-        </p>
-      )}
-
-      {emailPending && (
-        <p className="mt-4 text-muted">
-          Sending your confirmation email
-          {email ? (
-            <>
-              {" "}
-              to <span className="font-medium text-ink">{email}</span>
-            </>
-          ) : null}
-          …
-        </p>
-      )}
-
-      {emailSent === false && (
-        <div className="mt-4 rounded-xl bg-amber-50 px-4 py-4 text-left text-sm text-amber-950 ring-1 ring-amber-200">
-          <p className="font-medium">Confirmation email could not be sent</p>
-          <p className="mt-2 text-amber-900/90">
-            Your booking is still recorded
-            {reference ? (
-              <>
-                {" "}
-                (reference <span className="font-mono">{reference}</span>)
-              </>
-            ) : null}
-            . Save this page or contact{" "}
-            <a
-              href="mailto:hello@craftroutes.com"
-              className="font-medium underline"
-            >
-              hello@craftroutes.com
-            </a>{" "}
-            and we&apos;ll resend your details.
-          </p>
-          {emailError && (
-            <p className="mt-2 font-mono text-xs text-amber-800">
-              Reason: {emailError}
-            </p>
-          )}
-          <p className="mt-2 text-xs text-amber-800">
-            Checklist: (1) Add <code className="rounded bg-amber-100 px-1">RESEND_API_KEY</code>{" "}
-            and <code className="rounded bg-amber-100 px-1">EMAIL_FROM</code> in Vercel →
-            redeploy. (2) With test sender{" "}
-            <code className="rounded bg-amber-100 px-1">onboarding@resend.dev</code>, book using
-            the same email as your Resend account.
-          </p>
+    <div className="bg-cream pb-20">
+      <section className="border-b border-line bg-cream px-4 py-16 text-center sm:px-6">
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-2xl text-emerald-600">
+          ✓
         </div>
-      )}
-
-      {emailSent === null && !emailPending && !email && (
-        <p className="mt-4 text-muted">
-          Thank you for booking with Craft Routes. Save your reference below for
-          your records.
+        <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-emerald-700">
+          Booking confirmed
         </p>
-      )}
+        <h1 className="mt-2 font-display text-3xl font-bold text-ink sm:text-4xl">
+          You&apos;re all set!
+        </h1>
+        {emailSent === true && email && (
+          <p className="mx-auto mt-4 max-w-lg text-muted">
+            A confirmation has been sent to{" "}
+            <span className="font-medium text-ink">{email}</span>. {hostMessage}
+          </p>
+        )}
+        {emailPending && (
+          <p className="mx-auto mt-4 max-w-lg text-muted">
+            Sending your confirmation email…
+          </p>
+        )}
+        {emailSent === false && (
+          <p className="mx-auto mt-4 max-w-lg text-sm text-amber-900">
+            Your booking is confirmed
+            {bookingId ? ` (ref ${bookingId})` : ""}. We couldn&apos;t send email
+            — contact{" "}
+            <a href="mailto:hello@craftroutes.com" className="font-medium underline">
+              hello@craftroutes.com
+            </a>
+            {emailError ? ` (${emailError})` : ""}.
+          </p>
+        )}
+        {emailSent === null && !emailPending && (
+          <p className="mx-auto mt-4 max-w-lg text-muted">{hostMessage}</p>
+        )}
+      </section>
 
-      {reference && (
-        <p className="mt-4 rounded-lg bg-cream px-4 py-3 text-sm text-muted">
-          Reference: <span className="font-mono font-medium">{reference}</span>
-        </p>
-      )}
+      <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6">
+        {workshopTitle && (
+          <div className="overflow-hidden rounded-xl border border-line bg-white shadow-sm">
+            <div className="h-1 bg-brand-600" />
+            <div className="p-6 sm:p-8">
+              <p className="text-xs font-semibold uppercase tracking-wider text-brand-600">
+                Your booking
+              </p>
+              <h2 className="mt-2 font-display text-xl font-bold text-ink">
+                {workshopTitle}
+              </h2>
+              <dl className="mt-6 grid grid-cols-2 gap-4 text-sm">
+                {sessionDate && (
+                  <>
+                    <dt className="text-muted">Date</dt>
+                    <dd className="font-medium text-ink">{sessionDate}</dd>
+                  </>
+                )}
+                {sessionTime && (
+                  <>
+                    <dt className="text-muted">Time</dt>
+                    <dd className="font-medium text-ink">{sessionTime}</dd>
+                  </>
+                )}
+                {guestsCount && (
+                  <>
+                    <dt className="text-muted">Guests</dt>
+                    <dd className="font-medium text-ink">
+                      {guestsCount} {Number(guestsCount) === 1 ? "guest" : "guests"}
+                    </dd>
+                  </>
+                )}
+                {total && (
+                  <>
+                    <dt className="text-muted">Total paid</dt>
+                    <dd className="font-medium text-ink">{total}</dd>
+                  </>
+                )}
+              </dl>
+              {(location || region) && (
+                <p className="mt-4 text-sm text-muted">
+                  {location}
+                  {region ? ` — ${region}` : ""} — full address in your confirmation
+                  email
+                </p>
+              )}
+            </div>
+          </div>
+        )}
 
-      <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:justify-center">
-        <Link href="/workshops" className="btn-primary">
-          Browse more workshops
-        </Link>
-        <Link href="/" className="btn-secondary">
-          Back to home
-        </Link>
+        {hostName && (
+          <div className="mt-6 rounded-xl border border-line bg-white p-6">
+            <div className="flex gap-4">
+              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-cream text-xl">
+                👤
+              </span>
+              <div>
+                <p className="font-semibold text-ink">Your host: {hostName}</p>
+                <p className="mt-2 text-sm text-muted">
+                  They&apos;ll message you within 24 hours to confirm details and answer
+                  questions.
+                </p>
+                {workshopSlug && (
+                  <Link
+                    href={`/workshops/${workshopSlug}`}
+                    className="mt-4 inline-block text-sm font-medium text-brand-600 hover:underline"
+                  >
+                    View experience
+                  </Link>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {extra && extra.whatToBring.length > 0 && (
+          <div className="mt-6 rounded-xl border border-line bg-white p-6">
+            <h3 className="font-display font-bold text-ink">What to bring</h3>
+            <ul className="mt-4 space-y-3">
+              {extra.whatToBring.map((item) => (
+                <li key={item.text} className="flex gap-3 text-sm text-muted">
+                  <span aria-hidden>{item.icon}</span>
+                  {item.text}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:justify-center">
+          <Link href="/workshops" className="btn-secondary text-center">
+            Browse more experiences
+          </Link>
+          <Link href="/" className="btn-primary text-center">
+            Back to home
+          </Link>
+        </div>
+
+        {bookingId && (
+          <p className="mt-8 text-center text-xs text-muted">
+            Reference: <span className="font-mono">{bookingId}</span>
+          </p>
+        )}
       </div>
     </div>
   );

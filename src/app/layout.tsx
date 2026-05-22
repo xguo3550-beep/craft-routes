@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter, Lora } from "next/font/google";
-import { Suspense } from "react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
@@ -35,9 +34,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${lora.variable} font-sans min-h-screen flex flex-col`}
       >
-        <Suspense fallback={<div className="h-[65px] border-b border-line bg-white" />}>
-          <Header />
-        </Suspense>
+        <Header />
         <main className="flex-1">{children}</main>
         <Footer />
       </body>

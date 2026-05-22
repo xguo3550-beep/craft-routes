@@ -17,7 +17,17 @@ export function Footer() {
             <ul className="mt-3 space-y-2 text-sm text-muted">
               <li>
                 <Link href="/workshops" className="hover:text-brand-600">
-                  All workshops
+                  All experiences
+                </Link>
+              </li>
+              <li>
+                <Link href="/cities" className="hover:text-brand-600">
+                  Regions
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="hover:text-brand-600">
+                  About
                 </Link>
               </li>
               <li>

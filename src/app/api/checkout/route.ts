@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSessionWithWorkshop } from "@/lib/data/workshops";
-import { getStripe } from "@/lib/stripe";
-import { createServerClient } from "@/lib/supabase/server";
 import { buildBookingEmailDetails } from "@/lib/email/build-booking-email";
 import { sendBookingConfirmationEmail } from "@/lib/email/send-booking-confirmation";
+import { formatDate, formatPrice, formatTime, regionLabel } from "@/lib/format";
+import { createServerClient } from "@/lib/supabase/server";
+import { getStripe } from "@/lib/stripe";
 
 function successUrl(
   appUrl: string,
@@ -84,6 +85,23 @@ export async function POST(request: NextRequest) {
       paid: false,
     });
 
+    const successParams = (paid: boolean) => ({
+      booking_id: bookingId,
+      email: guestEmail,
+      payment: paid ? "stripe" : "demo",
+      session_id: sessionId,
+      guest_name: guestName,
+      guests_count: String(guestsCount),
+      workshop_title: workshop.title,
+      workshop_slug: workshop.slug,
+      session_date: formatDate(session.starts_at),
+      session_time: formatTime(session.starts_at),
+      location: workshop.location,
+      region: regionLabel(workshop.region),
+      total: formatPrice(totalCents, workshop.currency),
+      host_name: workshop.host_name,
+    });
+
     if (!stripe) {
       const emailResult = await sendBookingConfirmationEmail(emailDetails);
 
@@ -92,16 +110,11 @@ export async function POST(request: NextRequest) {
         emailSent: emailResult.sent,
         emailError: emailResult.error,
         url: successUrl(appUrl, {
-          booking_id: bookingId,
-          email: guestEmail,
+          ...successParams(false),
           email_sent: emailResult.sent ? "true" : "false",
           ...(emailResult.error
             ? { email_error: emailResult.error.slice(0, 200) }
             : {}),
-          payment: "demo",
-          session_id: sessionId,
-          guest_name: guestName,
-          guests_count: String(guestsCount),
         }),
       });
     }
@@ -130,14 +143,7 @@ export async function POST(request: NextRequest) {
         guests_count: String(guestsCount),
         guest_name: guestName,
       },
-      success_url: successUrl(appUrl, {
-        booking_id: bookingId,
-        email: guestEmail,
-        payment: "stripe",
-        session_id: sessionId,
-        guest_name: guestName,
-        guests_count: String(guestsCount),
-      }),
+      success_url: successUrl(appUrl, successParams(true)),
       cancel_url: `${appUrl}/workshops/${workshop.slug}`,
     });
 
