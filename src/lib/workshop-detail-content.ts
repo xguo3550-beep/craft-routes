@@ -5,6 +5,8 @@ export interface DetailItem {
 
 export interface WorkshopDetailExtra {
   category: string;
+  /** Optional override under the title (e.g. clay-forward wording) */
+  experienceLine?: string;
   minGuests: number;
   reviewCount: number;
   hostSubtitle: string;
@@ -27,7 +29,7 @@ const BY_SLUG: Record<string, WorkshopDetailExtra> = {
       { icon: "📖", text: "Leave with English recipes written for your own stove at home" },
     ],
     goodToKnow: [
-      { icon: "🌍", text: "Hosted in English — small group, not a tour bus" },
+      { icon: "🌍", text: "Hosted in English — small group" },
       { icon: "🌶️", text: "Heat is adjustable; vegetables & fermentation forward" },
       { icon: "✓", text: "Free cancellation up to 48 hours before" },
     ],
@@ -59,15 +61,17 @@ const BY_SLUG: Record<string, WorkshopDetailExtra> = {
     ],
   },
   "erhai-cycling-pottery": {
-    category: "Outdoors & crafts",
+    category: "Ceramics & clay",
+    experienceLine:
+      "6 hours · Hand-building clay in a lakeside studio · Up to 6 · from 2",
     minGuests: 2,
     reviewCount: 64,
     hostSubtitle: "Ceramic artist · Erhai lakeside · 12 years in Dali",
     hostLanguages: ["English", "Mandarin"],
     whatYouDo: [
-      { icon: "🚲", text: "Guided e-bike ride along Erhai's western shore with photo stops" },
-      { icon: "🏘️", text: "Pass through Bai villages rarely visited on tourist routes" },
-      { icon: "🏺", text: "Hand-build pottery in a lakeside studio — bowls or decorative pieces" },
+      { icon: "🏺", text: "Hand-build bowls or decorative pieces with Li Wei at the wheel — guided, unhurried" },
+      { icon: "👐", text: "Work wet clay, trim, and learn techniques you can repeat at home" },
+      { icon: "🌅", text: "Slow Erhai light through the studio windows — optional short lakeside walk" },
       { icon: "📦", text: "Optional international shipping for fired ceramics (3 weeks)" },
     ],
     goodToKnow: [
@@ -134,11 +138,10 @@ const BY_SLUG: Record<string, WorkshopDetailExtra> = {
       { icon: "🌲", text: "Forest walk on old Tea Horse Road paths" },
       { icon: "🔥", text: "Watch fire-roasted tea & taste aged pu'er" },
       { icon: "🍜", text: "Seasonal lunch with Chen's family" },
-      { icon: "🌅", text: "Sunset gongfu ceremony — max 6 guests" },
+      { icon: "🌅", text: "Sunset gongfu ceremony — up to six" },
     ],
     goodToKnow: [
-      { icon: "💎", text: "Premium half-day · priced for private host time" },
-      { icon: "👥", text: "Maximum six guests — intimate, never crowded" },
+      { icon: "👥", text: "Up to six people — unhurried, fully hosted" },
       { icon: "🌍", text: "Hosted in English" },
       { icon: "✓", text: "Free cancellation up to 48 hours before" },
     ],
@@ -181,7 +184,7 @@ function genericExtra(title: string, region: string): WorkshopDetailExtra {
     hostSubtitle: "Vetted local host",
     hostLanguages: ["English"],
     whatYouDo: [
-      { icon: "✨", text: `An afternoon with someone who lives here — not a tour script` },
+      { icon: "✨", text: "An afternoon with someone who lives here" },
       { icon: "📍", text: isDali ? "Slow pace, real places they know from daily life" : "Sichuan through food, craft, and conversation" },
     ],
     goodToKnow: [
@@ -210,7 +213,7 @@ export function getWorkshopDetailExtra(slug: string, title?: string, region?: st
     whatYouDo:
       extra.whatYouDo.length > 0
         ? extra.whatYouDo
-        : [{ icon: "✨", text: "Spend time with a vetted local host — intimate, not a tour group" }],
+        : [{ icon: "✨", text: "Spend an afternoon with a vetted local host" }],
     goodToKnow:
       extra.goodToKnow.length > 0
         ? extra.goodToKnow

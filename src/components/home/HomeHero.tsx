@@ -22,15 +22,14 @@ export function HomeHero() {
     <section className="bg-cream px-4 pb-14 pt-10 sm:px-6 sm:pb-20 sm:pt-14 lg:px-8">
       <div className="mx-auto max-w-4xl text-center">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-600">
-          Quiet luxury · Southwest China
+          Hosted experiences · Southwest China
         </p>
         <h1 className="mt-4 font-display text-4xl font-bold leading-[1.15] text-ink sm:text-5xl lg:text-[3.25rem]">
           A softer, slower, more human version of China
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
-          Curated cultural salons for design-minded professionals — intimate
-          host-led afternoons of indigo craft, mountain tea, ceramics, and heritage
-          villages. Not $25 walking tours or checklist sightseeing.
+          Cultural gatherings with local hosts — indigo courtyards, mountain tea,
+          lakeside clay, heritage villages across Yunnan and Sichuan.
         </p>
 
         <form
@@ -50,17 +49,11 @@ export function HomeHero() {
         </form>
 
         <p className="mx-auto mt-6 max-w-lg text-sm text-muted">
-          Five curated experiences · {POSITIONING.groupSize} · From $165 per person
+          Five hosted gatherings · {POSITIONING.groupSize}
         </p>
 
         <div className="mx-auto mt-10 flex flex-wrap justify-center gap-2">
-          {[
-            "Meaningful luxury",
-            "28–45 professionals",
-            "Intimate groups",
-            "Tea & craft",
-            "No mass tours",
-          ].map((tag) => (
+          {["Tea & craft", "Small groups", "Yunnan & Sichuan"].map((tag) => (
             <span
               key={tag}
               className="rounded-full border border-line bg-white px-3 py-1 text-xs font-medium text-muted"

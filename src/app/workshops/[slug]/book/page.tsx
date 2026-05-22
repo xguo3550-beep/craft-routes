@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { CheckoutForm } from "@/components/booking/CheckoutForm";
 import { getWorkshopBySlug } from "@/lib/data/workshops";
+import { groupSizePhrase } from "@/lib/brand";
 import { formatDate, formatPrice, formatTime, regionLabel } from "@/lib/format";
 
 interface PageProps {
@@ -40,8 +41,8 @@ export default async function WorkshopBookPage({ params, searchParams }: PagePro
         <header className="mt-8">
           <h1 className="font-display text-2xl font-bold text-ink">{workshop.title}</h1>
           <p className="mt-2 text-sm text-muted">
-            {formatDate(session.starts_at)} · {guests}{" "}
-            {guests === 1 ? "guest" : "guests"} · {regionLabel(workshop.region)}
+            {formatDate(session.starts_at)} · {groupSizePhrase(guests)} ·{" "}
+            {regionLabel(workshop.region)}
           </p>
           <p className="mt-1 text-sm text-muted">
             {formatTime(session.starts_at)} · {workshop.location}

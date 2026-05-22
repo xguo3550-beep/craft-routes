@@ -84,7 +84,8 @@ export function AccountBookings() {
                   </p>
                 )}
                 <p className="mt-1 text-sm font-medium text-ink">
-                  {formatPrice(b.total_cents, b.currency)} · {b.guests_count} guests
+                  {formatPrice(b.total_cents, b.currency)} · {b.guests_count}{" "}
+                  {b.guests_count === 1 ? "person" : "people"}
                 </p>
               </div>
               {slug && b.status !== "cancelled" && (
@@ -100,7 +101,7 @@ export function AccountBookings() {
             {b.status !== "cancelled" && (
               <div className="mt-6 grid gap-4 border-t border-line pt-6 sm:grid-cols-2">
                 <div>
-                  <label className="block text-xs font-medium text-muted">Guests</label>
+                  <label className="block text-xs font-medium text-muted">Your group</label>
                   <input
                     type="number"
                     min={1}

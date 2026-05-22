@@ -1,9 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
 import {
-  curatedPhotoUrl,
+  coverAlternateUrls,
   pickCoverKey,
   resolveWorkshopCoverUrl,
 } from "@/lib/workshop-cover-images";
@@ -23,23 +22,30 @@ export function WorkshopCover({
   region,
   src,
   className = "",
-  priority = false,
 }: WorkshopCoverProps) {
+  const key = pickCoverKey(slug, region, title);
   const primary = resolveWorkshopCoverUrl(slug, { region, title, imageUrl: src });
-  const fallback = curatedPhotoUrl(pickCoverKey(slug, region, title));
+  const alternates = coverAlternateUrls(key, region);
   const [imgSrc, setImgSrc] = useState(primary);
+  const [altIndex, setAltIndex] = useState(0);
+
+  function handleError() {
+    const next = altIndex + 1;
+    if (next < alternates.length) {
+      setAltIndex(next);
+      setImgSrc(alternates[next]);
+    }
+  }
 
   return (
-    <Image
+    // Native img avoids Next.js image optimizer blocking some Unsplash URLs
+    <img
       src={imgSrc}
       alt={title}
-      fill
-      priority={priority}
-      className={`object-cover ${className}`}
-      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-      onError={() => {
-        if (imgSrc !== fallback) setImgSrc(fallback);
-      }}
+      loading="lazy"
+      decoding="async"
+      className={`absolute inset-0 h-full w-full object-cover ${className}`}
+      onError={handleError}
     />
   );
 }

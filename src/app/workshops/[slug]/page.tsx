@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { DetailListSection } from "@/components/workshops/DetailListSection";
@@ -47,13 +46,11 @@ export default async function WorkshopDetailPage({ params }: PageProps) {
         </Link>
 
         <div className="relative mt-8 aspect-[16/9] overflow-hidden rounded-2xl bg-line shadow-sm">
-          <Image
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             src={workshop.image_url}
             alt={workshop.title}
-            fill
-            priority
-            className="object-cover"
-            sizes="(max-width: 1280px) 100vw, 1280px"
+            className="absolute inset-0 h-full w-full object-cover"
           />
           <div
             className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/40 via-transparent to-transparent"
@@ -75,8 +72,10 @@ export default async function WorkshopDetailPage({ params }: PageProps) {
             {workshop.title}
           </h1>
           <p className="mt-3 text-muted">
-            {workshop.duration_hours} hours · Up to {workshop.max_participants} guests
-            {extra.minGuests > 1 && ` · Min. ${extra.minGuests} guests`}
+            {extra.experienceLine ??
+              `${workshop.duration_hours} hours · Up to ${workshop.max_participants} people${
+                extra.minGuests > 1 ? ` · from ${extra.minGuests}` : ""
+              }`}
           </p>
           <p className="mt-2 text-sm text-muted">
             ⭐ {rating} · {extra.reviewCount} reviews

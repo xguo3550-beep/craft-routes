@@ -1,23 +1,35 @@
 /**
- * Curated real photography (Unsplash — free to use).
- * Run `npm run images:download` on your Mac to save copies under public/images/workshops/.
+ * Curated real photography (Unsplash).
+ * Run `npm run images:download` on your Mac, then USE_LOCAL_WORKSHOP_IMAGES=true
  */
 
-const PHOTO_PARAMS = "auto=format&fit=crop&w=1200&h=900&q=85";
+const PHOTO_PARAMS = "auto=format&fit=crop&w=1200&h=900&q=80";
 
-/** Thematic Unsplash photos — indigo, Erhai, tea, pottery, China villages */
+/** IDs that load reliably in-browser (same CDN family as other working cards) */
+const U = (id: string) =>
+  `https://images.unsplash.com/photo-${id}?${PHOTO_PARAMS}`;
+
 export const CURATED_PHOTO_URLS: Record<string, string> = {
-  "bai-ethnic-tie-dye": `https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?${PHOTO_PARAMS}`,
-  "erhai-cycling-pottery": `https://images.unsplash.com/photo-1470071459605-3b5ec3a8b698?${PHOTO_PARAMS}`,
-  "tea-ceremony-mount-emei": `https://images.unsplash.com/photo-1556671047-1351529b6bf1?${PHOTO_PARAMS}`,
-  "chengdu-tea-house-afternoon": `https://images.unsplash.com/photo-1544787219-cba4b4f3c313?${PHOTO_PARAMS}`,
-  "nuodeng-salt-well-hike": `https://images.unsplash.com/photo-1508804185779-d106f582f903?${PHOTO_PARAMS}`,
-  "shuimo-painting-pandas": `https://images.unsplash.com/photo-1563492065599-3520f775eeed?${PHOTO_PARAMS}`,
-  "sichuan-hotpot-cooking": `https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?${PHOTO_PARAMS}`,
-  "cafe-cats": `https://images.unsplash.com/photo-1514887279491-afe06896c428?${PHOTO_PARAMS}`,
-  "dali-experience": `https://images.unsplash.com/photo-1506905925346-21bda4d32df4?${PHOTO_PARAMS}`,
-  "sichuan-experience": `https://images.unsplash.com/photo-1528360983277-f83d811b5e8?${PHOTO_PARAMS}`,
-  "default-experience": `https://images.unsplash.com/photo-1508804185779-d106f582f903?${PHOTO_PARAMS}`,
+  "bai-ethnic-tie-dye": U("1615485924169-f27c8fe9c187"),
+  "erhai-cycling-pottery": U("1565194669956-38fb0b7a9c1e"),
+  "tea-ceremony-mount-emei": U("1506905925346-21bda4d32df4"),
+  "chengdu-tea-house-afternoon": U("1582878826629-29b7ad1cdc43"),
+  "nuodeng-salt-well-hike": U("1464822759023-fed622ff2c3b"),
+  "shuimo-painting-pandas": U("1563492065599-3520f775eeed"),
+  "sichuan-hotpot-cooking": U("1582878826629-29b7ad1cdc43"),
+  "cafe-cats": U("1514887279491-afe06896c428"),
+  "dali-experience": U("1506905925346-21bda4d32df4"),
+  "sichuan-experience": U("1563492065599-3520f775eeed"),
+  "default-experience": U("1464822759023-fed622ff2c3b"),
+};
+
+/** Distinct alternates when primary fails (never duplicate the primary URL) */
+export const FALLBACK_PHOTO_URLS: Record<string, string> = {
+  "bai-ethnic-tie-dye": U("1582719478250-c89cae4dc85b"),
+  "erhai-cycling-pottery": U("1578746926376-cabb46493b4b"),
+  "tea-ceremony-mount-emei": U("1464822759023-fed622ff2c3b"),
+  "chengdu-tea-house-afternoon": U("1563492065599-3520f775eeed"),
+  "nuodeng-salt-well-hike": U("1506905925346-21bda4d32df4"),
 };
 
 export const LOCAL_WORKSHOP_COVERS = Object.keys(CURATED_PHOTO_URLS);
@@ -53,33 +65,49 @@ export function pickCoverKey(
   return "default-experience";
 }
 
-export function curatedPhotoUrl(key: string): string {
-  return CURATED_PHOTO_URLS[key] ?? CURATED_PHOTO_URLS["default-experience"];
+export function curatedPhotoUrl(key: string, useFallback = false): string {
+  const map = useFallback ? FALLBACK_PHOTO_URLS : CURATED_PHOTO_URLS;
+  return map[key] ?? CURATED_PHOTO_URLS[key] ?? CURATED_PHOTO_URLS["default-experience"];
+}
+
+/** Ordered alternates for client-side onError recovery */
+export function coverAlternateUrls(key: string, region?: string): string[] {
+  const urls = [
+    curatedPhotoUrl(key, false),
+    curatedPhotoUrl(key, true),
+    region === "sichuan"
+      ? curatedPhotoUrl("sichuan-experience")
+      : curatedPhotoUrl("dali-experience"),
+    curatedPhotoUrl("default-experience"),
+  ];
+  return urls.filter((url, i, arr) => arr.indexOf(url) === i);
 }
 
 export function resolveWorkshopCoverUrl(
   slug: string,
   options?: { region?: string; title?: string; imageUrl?: string | null }
 ): string {
+  const key = pickCoverKey(slug, options?.region, options?.title);
   const imageUrl = options?.imageUrl?.trim();
 
-  if (imageUrl?.startsWith("http://") || imageUrl?.startsWith("https://")) {
-    return imageUrl;
-  }
-
-  if (
-    process.env.USE_LOCAL_WORKSHOP_IMAGES === "true" &&
-    imageUrl?.startsWith("/images/workshops/")
-  ) {
-    return imageUrl;
-  }
-
   if (process.env.USE_LOCAL_WORKSHOP_IMAGES === "true") {
-    const key = pickCoverKey(slug, options?.region, options?.title);
     return workshopCoverLocalPath(key);
   }
 
-  const key = pickCoverKey(slug, options?.region, options?.title);
+  // Ignore stale Unsplash URLs in DB/mock — always use the curated map by slug
+  if (
+    imageUrl?.startsWith("http://") ||
+    imageUrl?.startsWith("https://")
+  ) {
+    if (!imageUrl.includes("images.unsplash.com")) {
+      return imageUrl;
+    }
+  }
+
+  if (imageUrl?.startsWith("/images/")) {
+    return imageUrl;
+  }
+
   return curatedPhotoUrl(key);
 }
 
@@ -97,20 +125,10 @@ export function normalizeWorkshopImageUrl(workshop: {
   title?: string;
   image_url?: string | null;
 }): string {
-  const url = workshop.image_url?.trim() ?? "";
-
-  if (url.startsWith("http://") || url.startsWith("https://")) {
-    return url;
-  }
-
-  if (process.env.USE_LOCAL_WORKSHOP_IMAGES === "true" && url.startsWith("/images/")) {
-    return url;
-  }
-
   return resolveWorkshopCoverUrl(workshop.slug, {
     region: workshop.region,
     title: workshop.title,
-    imageUrl: url,
+    imageUrl: workshop.image_url,
   });
 }
 

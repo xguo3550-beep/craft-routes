@@ -174,9 +174,10 @@ export function BookingSuccessContent({
                 )}
                 {guestsCount && (
                   <>
-                    <dt className="text-muted">Guests</dt>
+                    <dt className="text-muted">Your group</dt>
                     <dd className="font-medium text-ink">
-                      {guestsCount} {Number(guestsCount) === 1 ? "guest" : "guests"}
+                      {guestsCount}{" "}
+                      {Number(guestsCount) === 1 ? "person" : "people"}
                     </dd>
                   </>
                 )}

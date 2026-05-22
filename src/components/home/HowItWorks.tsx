@@ -1,19 +1,15 @@
 const steps = [
   {
-    title: "Choose a salon",
-    desc: "Five curated experiences — vetted hosts, premium pricing, max six guests.",
+    title: "Choose a gathering",
+    desc: "Five hosted afternoons with vetted local hosts.",
   },
   {
     title: "Reserve your place",
-    desc: "Secure checkout. You are buying atmosphere and host time, not a discount tour.",
+    desc: "Pick a date and the size of your group.",
   },
   {
     title: "Spend the afternoon",
-    desc: "Tea, indigo, clay, or village pace — conversational, unhurried, human scale.",
-  },
-  {
-    title: "Return changed",
-    desc: "The kind of memory creative professionals pay for — and share quietly.",
+    desc: "Tea, indigo, clay, or village pace — unhurried, conversational.",
   },
 ];
 
@@ -23,7 +19,7 @@ export function HowItWorks() {
       <h2 className="text-center font-display text-2xl font-bold text-ink sm:text-3xl">
         How it works
       </h2>
-      <div className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-12 grid gap-10 sm:grid-cols-3">
         {steps.map((step, i) => (
           <div key={step.title} className="text-center">
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand-600 text-lg font-bold text-white">

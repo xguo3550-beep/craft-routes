@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import type { Workshop, WorkshopSession } from "@/types";
 import { formatPrice, formatShortDate } from "@/lib/format";
-import { CONTACT_EMAIL } from "@/lib/brand";
+import { BOOKING_COPY, CONTACT_EMAIL, groupSizePhrase } from "@/lib/brand";
 import { getWorkshopDetailExtra } from "@/lib/workshop-detail-content";
 
 interface WorkshopBookingPanelProps {
@@ -36,7 +36,7 @@ export function WorkshopBookingPanel({ workshop, sessions }: WorkshopBookingPane
   if (sessions.length === 0) {
     return (
       <div className="rounded-xl border border-line bg-cream p-6 text-sm text-muted">
-        No upcoming dates. Email{" "}
+        {BOOKING_COPY.noDates} Email{" "}
         <a href={`mailto:${CONTACT_EMAIL}`} className="font-medium text-brand-600">
           {CONTACT_EMAIL}
         </a>
@@ -46,21 +46,21 @@ export function WorkshopBookingPanel({ workshop, sessions }: WorkshopBookingPane
 
   return (
     <div className="rounded-xl border border-line bg-cream/80 p-6">
-      <h2 className="font-display text-xl font-bold text-ink">Join this experience</h2>
+      <h2 className="font-display text-xl font-bold text-ink">{BOOKING_COPY.panelTitle}</h2>
       <p className="mt-1 text-sm text-muted">
-        Spend an afternoon with {workshop.host_name}
+        An afternoon with {workshop.host_name}
       </p>
       <p className="mt-2 text-2xl font-bold text-ink">
         {formatPrice(workshop.price_cents, workshop.currency)}
         <span className="text-base font-normal text-muted"> per person</span>
       </p>
       <p className="mt-1 text-sm text-muted">
-        Intimate session · max {workshop.max_participants} guests
-        {extra.minGuests > 1 ? ` · minimum ${extra.minGuests}` : ""}
+        Up to {workshop.max_participants} people
+        {extra.minGuests > 1 ? ` · from ${extra.minGuests}` : ""}
       </p>
 
       <div className="mt-6">
-        <p className="text-sm font-medium text-ink">Select a date</p>
+        <p className="text-sm font-medium text-ink">{BOOKING_COPY.upcomingLabel}</p>
         <div className="mt-2 flex flex-wrap gap-2">
           {sessions.slice(0, 6).map((s) => (
             <button
@@ -80,13 +80,13 @@ export function WorkshopBookingPanel({ workshop, sessions }: WorkshopBookingPane
       </div>
 
       <div className="mt-6">
-        <p className="text-sm font-medium text-ink">Guests</p>
+        <p className="text-sm font-medium text-ink">{BOOKING_COPY.groupLabel}</p>
         <div className="mt-2 inline-flex items-center gap-3 rounded-lg border border-line bg-white px-2 py-1">
           <button
             type="button"
             onClick={() => setGuests((g) => Math.max(extra.minGuests, g - 1))}
             className="flex h-9 w-9 items-center justify-center rounded-md text-lg text-ink hover:bg-cream"
-            aria-label="Fewer guests"
+            aria-label="Smaller group"
           >
             −
           </button>
@@ -95,7 +95,7 @@ export function WorkshopBookingPanel({ workshop, sessions }: WorkshopBookingPane
             type="button"
             onClick={() => setGuests((g) => Math.min(maxGuests, g + 1))}
             className="flex h-9 w-9 items-center justify-center rounded-md text-lg text-ink hover:bg-cream"
-            aria-label="More guests"
+            aria-label="Larger group"
           >
             +
           </button>
@@ -105,13 +105,9 @@ export function WorkshopBookingPanel({ workshop, sessions }: WorkshopBookingPane
       <div className="mt-6 space-y-2 border-t border-line pt-4 text-sm">
         <div className="flex justify-between text-muted">
           <span>
-            {formatPrice(workshop.price_cents)} × {guests} guests
+            {formatPrice(workshop.price_cents)} × {groupSizePhrase(guests)}
           </span>
           <span>{formatPrice(totalCents, workshop.currency)}</span>
-        </div>
-        <div className="flex justify-between text-muted">
-          <span>Booking fee</span>
-          <span>$0</span>
         </div>
         <div className="flex justify-between border-t border-line pt-2 text-base font-bold text-ink">
           <span>Total</span>
@@ -120,10 +116,10 @@ export function WorkshopBookingPanel({ workshop, sessions }: WorkshopBookingPane
       </div>
 
       <Link href={bookHref} className="btn-primary mt-6 w-full text-center">
-        Join this experience
+        {BOOKING_COPY.joinCta}
       </Link>
       <p className="mt-3 text-center text-xs text-muted">
-        Secure checkout · Free cancellation 48h before · Premium small-group experience
+        {BOOKING_COPY.checkoutFooter}
       </p>
     </div>
   );

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { Workshop, WorkshopSession } from "@/types";
+import { groupSizePhrase } from "@/lib/brand";
 import { formatDate, formatPrice, formatTime } from "@/lib/format";
 
 interface CheckoutFormProps {
@@ -160,7 +161,7 @@ export function CheckoutForm({ workshop, session, guests }: CheckoutFormProps) {
         {loading ? "Processing…" : "Confirm and pay"}
       </button>
       <p className="text-center text-xs text-muted">
-        By booking you agree to our guest terms and cancellation policy
+        By reserving you agree to our terms and cancellation policy
       </p>
 
       <p className="text-center text-sm text-muted">
@@ -171,8 +172,8 @@ export function CheckoutForm({ workshop, session, guests }: CheckoutFormProps) {
           ← Back to experience
         </Link>
         {" · "}
-        {formatDate(session.starts_at)} · {formatTime(session.starts_at)} · {guests}{" "}
-        {guests === 1 ? "guest" : "guests"}
+        {formatDate(session.starts_at)} · {formatTime(session.starts_at)} ·{" "}
+        {groupSizePhrase(guests)}
       </p>
     </form>
   );

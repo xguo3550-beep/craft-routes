@@ -2,9 +2,9 @@ import { POSITIONING } from "@/lib/brand";
 
 export function TrustBar() {
   const items = [
-    "Fewer listings, higher standards",
     POSITIONING.groupSize,
-    "Priced for identity, not volume",
+    "Thoughtful pacing",
+    "Hosts chosen for depth",
   ];
 
   return (

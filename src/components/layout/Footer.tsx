@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CONTACT_EMAIL, SITE_NAME } from "@/lib/brand";
+import { AUDIENCE_LINE, CONTACT_EMAIL, SITE_NAME } from "@/lib/brand";
 
 export function Footer() {
   return (
@@ -9,8 +9,7 @@ export function Footer() {
           <div>
             <p className="font-display text-xl font-bold text-ink">{SITE_NAME}</p>
             <p className="mt-2 text-sm leading-relaxed text-muted">
-              Quiet luxury cultural travel in Yunnan & Sichuan — intimate host-led
-              afternoons for culturally curious professionals, not mass tourism.
+              {AUDIENCE_LINE}
             </p>
           </div>
           <div>

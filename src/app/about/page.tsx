@@ -3,24 +3,24 @@ import { CONTACT_EMAIL, SITE_NAME, siteTitle } from "@/lib/brand";
 
 const values = [
   {
-    icon: "✨",
-    title: "Meaningful luxury",
-    text: "We price for atmosphere, host time, and intimacy — not footfall. No race to the bottom.",
-  },
-  {
     icon: "👥",
-    title: "Intimate by design",
-    text: "Most sessions cap at six guests. Conversational, thoughtful, never a 20-person tour bus.",
+    title: "Small groups",
+    text: "Most gatherings welcome up to six people — enough room to listen, ask, and stay unhurried.",
   },
   {
-    icon: "🎯",
-    title: "Educated cultural consumers",
-    text: "Built for designers, founders, and curious professionals 28–45 — not mass tourism.",
+    icon: "🍵",
+    title: "Thoughtful pacing",
+    text: "Afternoons built around conversation, craft, and the rhythm of the place — not a timetable of sights.",
+  },
+  {
+    icon: "🏺",
+    title: "Depth over scale",
+    text: "We list fewer hosts and protect their time. Each gathering is chosen for how they work, not how many seats they fill.",
   },
   {
     icon: "🤝",
-    title: "Hosts paid fairly",
-    text: "Premium pricing lets artisans and tea makers host fewer groups, with more respect.",
+    title: "Fair to hosts",
+    text: "Pricing reflects real preparation and hospitality — so artisans and tea makers can host well, not often.",
   },
 ];
 
@@ -33,8 +33,7 @@ const team = [
 
 export const metadata = {
   title: siteTitle("About"),
-  description:
-    `${SITE_NAME} connects travellers with local hosts in Dali and Sichuan — curated cultural experiences, not package tours.`,
+  description: `${SITE_NAME} — hosted cultural gatherings with local hosts in Dali and Sichuan.`,
 };
 
 export default function AboutPage() {
@@ -49,10 +48,9 @@ export default function AboutPage() {
             The best way to understand a place is through its people
           </h1>
           <p className="mt-6 text-lg leading-relaxed text-muted">
-            {SITE_NAME} is not a tour agency. We connect curious travellers with
-            local artists, tea makers, village cooks, and craftspeople — for
-            afternoons in homes, studios, and courtyards across Dali and Sichuan.
-            The point is belonging for a moment, not checking off attractions.
+            {SITE_NAME} connects travellers with local artists, tea makers, village
+            cooks, and craftspeople — for afternoons in homes, studios, and
+            courtyards across Dali and Sichuan.
           </p>
         </div>
       </section>
@@ -61,15 +59,14 @@ export default function AboutPage() {
         <section>
           <h2 className="font-display text-2xl font-bold text-ink">Why we built this</h2>
           <p className="mt-4 leading-relaxed text-muted">
-            China is reopening to curious travellers who want more than a checklist of
-            sights. We started {SITE_NAME} because the moments that stay with you are
-            often small: folding bao with a grandmother, dipping indigo cloth, or
-            learning gongfu tea from someone who studied for years.
+            The moments that stay with you are often small: folding bao with a
+            grandmother, dipping indigo cloth, learning gongfu tea from someone who
+            studied for years. We started {SITE_NAME} to make those afternoons easier
+            to find — and to host well.
           </p>
           <p className="mt-4 leading-relaxed text-muted">
-            We are not Klook, Viator, or a $25 walking-tour marketplace. Every host is
-            vetted; we would rather list five exceptional afternoons than fifty mediocre
-            ones.
+            We list a handful of gatherings at a time. Every host is vetted in person
+            or through someone we trust on the ground.
           </p>
         </section>
 
@@ -114,15 +111,14 @@ export default function AboutPage() {
         <section className="mt-16 rounded-xl border border-line bg-cream p-8 text-center">
           <h2 className="font-display text-xl font-bold text-ink">Work with us</h2>
           <p className="mt-3 text-muted">
-            Are you a chef, artist, or craftsperson in Dali or Sichuan? Travel agents
-            welcome too.
+            Are you a chef, artist, or craftsperson in Dali or Sichuan?
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Link href="/signup?role=host" className="btn-primary">
               Sign up as a host
             </Link>
             <Link href="/signup?role=customer" className="btn-secondary">
-              Sign up as a guest
+              Create an account
             </Link>
           </div>
           <a

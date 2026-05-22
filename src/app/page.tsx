@@ -24,16 +24,12 @@ export default async function HomePage() {
         </Suspense>
 
         <div className="mt-10 max-w-2xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-600">
-            Curated for the creative class
-          </p>
-          <h2 className="mt-2 font-display text-2xl font-bold text-ink sm:text-3xl">
+          <h2 className="font-display text-2xl font-bold text-ink sm:text-3xl">
             Five stories from Southwest China
           </h2>
           <p className="mt-3 text-muted leading-relaxed">
-            Each is a host portrait for travellers 28–45 with real spending power —
-            designers, founders, art directors, DINK couples. Intimate groups, premium
-            pricing, no mass-tour energy.
+            Small groups, thoughtful pacing, and hosts chosen for depth rather
+            than scale.
           </p>
         </div>
 
@@ -54,8 +50,7 @@ export default async function HomePage() {
             Two regions, countless stories
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-muted">
-            {all.length} curated experiences — Dali&apos;s slow craft life and
-            Sichuan&apos;s food, art, and tea culture.
+            Dali and Sichuan — craft, tea, and village afternoons.
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Link href="/workshops?region=dali" className="btn-primary">

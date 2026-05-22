@@ -35,7 +35,7 @@ export const MOCK_WORKSHOPS: Workshop[] = [
     gallery_urls: [],
     highlights: [
       "Plant indigo & hand binding",
-      "Private courtyard · max 6 guests",
+      "Private courtyard · up to 6",
       "For designers & textile collectors",
       "Tea between each dye dip",
     ],
@@ -101,7 +101,7 @@ export const MOCK_WORKSHOPS: Workshop[] = [
     max_participants: 6,
     price_cents: 16500,
     currency: "usd",
-    image_url: workshopCoverPath("tea-ceremony-mount-emei"),
+    image_url: workshopCoverPath("chengdu-tea-house-afternoon"),
     gallery_urls: [],
     highlights: [
       "Classic Chengdu teahouse visit",
@@ -163,7 +163,7 @@ export const MOCK_WORKSHOPS: Workshop[] = [
     description:
       "A private half-day with Chen Yu — forest walk, fire-roasted tea, local lunch, transport, and sunset gongfu. Tea as lifestyle, not a $35 tasting.",
     long_description:
-      "Chen Yu roasts in small batches on the slopes below Mount Emei. Your afternoon is unhurried and fully hosted: private pickup, a forest walk along paths traders once used, fire-roasted green and aged pu'er at his hillside shelter, a seasonal lunch cooked by his family, and gongfu at sunset when the light turns gold. Maximum six guests. This is the experience London or New York creative professionals actually pay for — identity, atmosphere, and human pace — not a quick tasting before the next attraction.",
+      "Chen Yu roasts in small batches on the slopes below Mount Emei. Your afternoon is unhurried and fully hosted: private pickup, a forest walk along paths traders once used, fire-roasted green and aged pu'er at his hillside shelter, a seasonal lunch cooked by his family, and gongfu at sunset when the light turns gold. Up to six people — identity, atmosphere, and human pace.",
     region: "sichuan",
     location: "Emeishan City, Sichuan",
     duration_hours: 6,

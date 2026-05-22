@@ -30,12 +30,12 @@ export const EXPERIENCE_EDITORIAL: Record<string, ExperienceEditorial> = {
     order: 2,
   },
   "erhai-cycling-pottery": {
-    tagline: "$240 · lakeside clay & slow Erhai light · intimate studio",
-    mood: "Ceramics",
+    tagline: "$240 · hand-building clay with your host · lakeside studio · max 6",
+    mood: "Clay",
     order: 3,
   },
   "chengdu-tea-house-afternoon": {
-    tagline: "$165 · teahouse ritual & family kitchen · max 6 guests",
+    tagline: "$165 · teahouse ritual & family kitchen · up to 6",
     mood: "Tea life",
     order: 4,
   },

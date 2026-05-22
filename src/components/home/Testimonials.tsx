@@ -15,7 +15,7 @@ const reviews = [
   },
   {
     quote:
-      "Chengdu teahouse first, then cooking in Zhang's kitchen — community feeling, not a spice challenge. Exactly the China I wanted to see.",
+      "Chengdu teahouse first, then cooking in Zhang's kitchen — community feeling, exactly the China I wanted to see.",
     name: "Emma R.",
     meta: "Photographer · Bristol · Tea house afternoon",
     rating: 5,
@@ -26,11 +26,8 @@ export function Testimonials() {
   return (
     <section className="border-t border-line bg-white px-4 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-brand-600">
-          Notes from guests
-        </p>
-        <h2 className="mt-2 text-center font-display text-2xl font-bold text-ink sm:text-3xl">
-          For people who travel with curiosity, not a checklist
+        <h2 className="text-center font-display text-2xl font-bold text-ink sm:text-3xl">
+          From the table
         </h2>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {reviews.map((r) => (

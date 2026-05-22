@@ -20,7 +20,7 @@ function buildHtml(details: BookingEmailDetails): string {
     <tr><td style="padding: 8px 0; color: #6f5038;">Time</td><td style="padding: 8px 0;">${details.sessionTime} (China time)</td></tr>
     <tr><td style="padding: 8px 0; color: #6f5038;">Location</td><td style="padding: 8px 0;">${details.workshopLocation}</td></tr>
     <tr><td style="padding: 8px 0; color: #6f5038;">Host</td><td style="padding: 8px 0;">${details.hostName}</td></tr>
-    <tr><td style="padding: 8px 0; color: #6f5038;">Guests</td><td style="padding: 8px 0;">${details.guestsCount}</td></tr>
+    <tr><td style="padding: 8px 0; color: #6f5038;">Your group</td><td style="padding: 8px 0;">${details.guestsCount}</td></tr>
     <tr><td style="padding: 8px 0; color: #6f5038;">Total</td><td style="padding: 8px 0;"><strong>${details.totalFormatted}</strong></td></tr>
   </table>
   <h2 style="font-size: 16px; color: #166534;">What's included</h2>
@@ -44,7 +44,7 @@ Date: ${details.sessionDate}
 Time: ${details.sessionTime} (China time)
 Location: ${details.workshopLocation}
 Host: ${details.hostName}
-Guests: ${details.guestsCount}
+Your group: ${details.guestsCount}
 Total: ${details.totalFormatted}
 
 What's included:
