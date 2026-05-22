@@ -6,17 +6,17 @@ import {
   getMockSession,
 } from "@/lib/data/mock-workshops";
 import type { Workshop, WorkshopWithSessions, WorkshopSession } from "@/types";
+import { KNOWN_COVER_SLUGS, workshopCoverImage } from "@/lib/workshop-cover-images";
 import { workshopCoverPath } from "@/lib/workshop-meta";
 
 function withCoverImage(workshop: Workshop): Workshop {
-  const cover = workshopCoverPath(workshop.slug);
-  const stale =
-    workshop.image_url.includes("unsplash.com") ||
-    workshop.image_url.endsWith(".svg") ||
-    (workshop.image_url.startsWith("/images/") &&
-      !process.env.USE_LOCAL_WORKSHOP_IMAGES);
-
-  return stale ? { ...workshop, image_url: cover } : workshop;
+  if (process.env.USE_LOCAL_WORKSHOP_IMAGES === "true" && KNOWN_COVER_SLUGS.has(workshop.slug)) {
+    return { ...workshop, image_url: workshopCoverPath(workshop.slug) };
+  }
+  if (KNOWN_COVER_SLUGS.has(workshop.slug)) {
+    return { ...workshop, image_url: workshopCoverImage(workshop.slug) };
+  }
+  return workshop;
 }
 
 function filterByCity(workshops: Workshop[], city: string): Workshop[] {

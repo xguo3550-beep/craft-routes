@@ -22,7 +22,10 @@ const SLUG_BADGE: Record<string, { label: string; className: string }> = {
   },
 };
 
-import { workshopCoverImage, workshopCoverLocalPath } from "@/lib/workshop-cover-images";
+import {
+  workshopCoverImage,
+  workshopCoverLocalPath,
+} from "@/lib/workshop-cover-images";
 
 export function workshopCoverPath(slug: string): string {
   if (process.env.USE_LOCAL_WORKSHOP_IMAGES === "true") {

@@ -3,11 +3,8 @@ import type { Workshop } from "@/types";
 import { WorkshopCover } from "@/components/workshops/WorkshopCover";
 import { cityLabel, getWorkshopCity } from "@/lib/cities";
 import { formatPrice } from "@/lib/format";
-import {
-  regionPastelBg,
-  workshopBadge,
-  workshopRating,
-} from "@/lib/workshop-meta";
+import { workshopBadge, workshopRating } from "@/lib/workshop-meta";
+import { workshopCoverImage } from "@/lib/workshop-cover-images";
 
 interface WorkshopCardProps {
   workshop: Workshop;
@@ -16,37 +13,35 @@ interface WorkshopCardProps {
 export function WorkshopCard({ workshop }: WorkshopCardProps) {
   const badge = workshopBadge(workshop.slug, workshop.featured);
   const rating = workshopRating(workshop.id);
-  const pastel = regionPastelBg(workshop.region);
   const city = getWorkshopCity(workshop.slug, workshop.region);
+  const coverSrc = workshopCoverImage(workshop.slug);
 
   return (
-    <Link href={`/workshops/${workshop.slug}`} className="card-minglu group block">
-      <div className={`relative aspect-[5/4] ${pastel} overflow-hidden`}>
-        <div className="absolute inset-3 overflow-hidden rounded-lg shadow-soft transition duration-500 group-hover:scale-[1.02]">
-          <div className="relative size-full">
-            <WorkshopCover
-              slug={workshop.slug}
-              title={workshop.title}
-              src={workshop.image_url}
-              className="transition duration-500 group-hover:scale-105"
-            />
-          </div>
-        </div>
+    <Link href={`/workshops/${workshop.slug}`} className="card-minglu group block overflow-hidden">
+      <div className="relative aspect-[4/3] overflow-hidden bg-line">
+        <WorkshopCover
+          slug={workshop.slug}
+          title={workshop.title}
+          src={coverSrc}
+          className="transition duration-700 group-hover:scale-105"
+        />
+        <div
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/50 via-ink/5 to-transparent"
+          aria-hidden
+        />
+        {badge && (
+          <span
+            className={`absolute left-3 top-3 rounded-md px-2 py-0.5 text-xs font-medium shadow-sm ${badge.className}`}
+          >
+            {badge.label}
+          </span>
+        )}
       </div>
 
       <div className="p-5">
-        <div className="flex items-start justify-between gap-2">
-          <p className="text-xs font-semibold uppercase tracking-wider text-brand-600">
-            {cityLabel(city)}
-          </p>
-          {badge && (
-            <span
-              className={`shrink-0 rounded-md px-2 py-0.5 text-xs font-medium ${badge.className}`}
-            >
-              {badge.label}
-            </span>
-          )}
-        </div>
+        <p className="text-xs font-semibold uppercase tracking-wider text-brand-600">
+          {cityLabel(city)}
+        </p>
 
         <h3 className="mt-2 font-display text-lg font-semibold leading-snug text-ink group-hover:text-brand-700">
           {workshop.title}
