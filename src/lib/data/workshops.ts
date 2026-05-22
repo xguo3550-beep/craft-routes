@@ -8,14 +8,15 @@ import {
 import type { Workshop, WorkshopWithSessions, WorkshopSession } from "@/types";
 import { workshopCoverPath } from "@/lib/workshop-meta";
 
-function withLocalCover(workshop: Workshop): Workshop {
-  const local = workshopCoverPath(workshop.slug);
-  const useLocal =
-    workshop.image_url.startsWith("/") ||
+function withCoverImage(workshop: Workshop): Workshop {
+  const cover = workshopCoverPath(workshop.slug);
+  const stale =
     workshop.image_url.includes("unsplash.com") ||
-    workshop.image_url.endsWith(".svg");
+    workshop.image_url.endsWith(".svg") ||
+    (workshop.image_url.startsWith("/images/") &&
+      !process.env.USE_LOCAL_WORKSHOP_IMAGES);
 
-  return useLocal ? { ...workshop, image_url: local } : workshop;
+  return stale ? { ...workshop, image_url: cover } : workshop;
 }
 
 function filterByCity(workshops: Workshop[], city: string): Workshop[] {
@@ -47,7 +48,7 @@ export async function getWorkshops(
   if (error || !data?.length) {
     workshops = getMockWorkshops(region, city);
   } else {
-    workshops = (data as Workshop[]).map(withLocalCover);
+    workshops = (data as Workshop[]).map(withCoverImage);
     if (city) {
       workshops = filterByCity(workshops, city);
     }
@@ -89,7 +90,7 @@ export async function getWorkshopBySlug(
     .order("starts_at", { ascending: true });
 
   return {
-    ...withLocalCover(workshop as Workshop),
+    ...withCoverImage(workshop as Workshop),
     sessions: (sessions ?? []) as WorkshopSession[],
   };
 }

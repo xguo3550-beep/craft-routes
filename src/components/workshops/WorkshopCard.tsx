@@ -23,11 +23,14 @@ export function WorkshopCard({ workshop }: WorkshopCardProps) {
     <Link href={`/workshops/${workshop.slug}`} className="card-minglu group block">
       <div className={`relative aspect-[5/4] ${pastel} overflow-hidden`}>
         <div className="absolute inset-3 overflow-hidden rounded-lg shadow-soft transition duration-500 group-hover:scale-[1.02]">
-          <WorkshopCover
-            slug={workshop.slug}
-            title={workshop.title}
-            className="size-full"
-          />
+          <div className="relative size-full">
+            <WorkshopCover
+              slug={workshop.slug}
+              title={workshop.title}
+              src={workshop.image_url}
+              className="transition duration-500 group-hover:scale-105"
+            />
+          </div>
         </div>
       </div>
 

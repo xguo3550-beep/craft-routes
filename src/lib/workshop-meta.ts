@@ -22,21 +22,13 @@ const SLUG_BADGE: Record<string, { label: string; className: string }> = {
   },
 };
 
-const SLUG_COVER_GRADIENT: Record<string, string> = {
-  "bai-ethnic-tie-dye": "from-[#1E3A5F] to-[#4A6FA5]",
-  "erhai-cycling-pottery": "from-[#E8F4F8] via-[#B8D4E3] to-[#7BA3BC]",
-  "sichuan-hotpot-cooking": "from-[#C0562F] to-[#8B3A22]",
-  "shuimo-painting-pandas": "from-[#F0EDE8] to-[#C4B8A8]",
-  "tea-ceremony-mount-emei": "from-[#E8F5E9] to-[#81A684]",
-  "nuodeng-salt-well-hike": "from-[#5C4A3A] to-[#A68B6B]",
-};
-
-export function workshopCoverGradient(slug: string): string {
-  return SLUG_COVER_GRADIENT[slug] ?? "from-brand-100 to-brand-200";
-}
+import { workshopCoverImage, workshopCoverLocalPath } from "@/lib/workshop-cover-images";
 
 export function workshopCoverPath(slug: string): string {
-  return `/images/workshops/${slug}.svg`;
+  if (process.env.USE_LOCAL_WORKSHOP_IMAGES === "true") {
+    return workshopCoverLocalPath(slug);
+  }
+  return workshopCoverImage(slug);
 }
 
 export function workshopEmoji(slug: string): string {

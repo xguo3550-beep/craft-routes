@@ -1,22 +1,21 @@
-import { workshopCoverGradient, workshopEmoji } from "@/lib/workshop-meta";
+import Image from "next/image";
+import { workshopCoverImage } from "@/lib/workshop-cover-images";
 
 interface WorkshopCoverProps {
   slug: string;
   title: string;
+  src?: string;
   className?: string;
 }
 
-/** CSS gradient + emoji — no external files (SVG assets were corrupt) */
-export function WorkshopCover({ slug, title, className = "" }: WorkshopCoverProps) {
+export function WorkshopCover({ slug, title, src, className = "" }: WorkshopCoverProps) {
   return (
-    <div
-      role="img"
-      aria-label={title}
-      className={`flex items-center justify-center bg-gradient-to-br ${workshopCoverGradient(slug)} ${className}`}
-    >
-      <span className="text-[4.5rem] leading-none drop-shadow-sm sm:text-[5.5rem]" aria-hidden>
-        {workshopEmoji(slug)}
-      </span>
-    </div>
+    <Image
+      src={src ?? workshopCoverImage(slug)}
+      alt={title}
+      fill
+      className={`object-cover ${className}`}
+      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+    />
   );
 }
