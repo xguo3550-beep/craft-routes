@@ -6,7 +6,6 @@ import { formatPrice } from "@/lib/format";
 import {
   regionPastelBg,
   workshopBadge,
-  workshopEmoji,
   workshopRating,
 } from "@/lib/workshop-meta";
 
@@ -23,16 +22,13 @@ export function WorkshopCard({ workshop }: WorkshopCardProps) {
   return (
     <Link href={`/workshops/${workshop.slug}`} className="card-minglu group block">
       <div className={`relative aspect-[5/4] ${pastel} overflow-hidden`}>
-        <div className="absolute inset-3 overflow-hidden rounded-lg shadow-soft">
+        <div className="absolute inset-3 overflow-hidden rounded-lg shadow-soft transition duration-500 group-hover:scale-[1.02]">
           <WorkshopCover
             slug={workshop.slug}
             title={workshop.title}
-            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+            className="size-full"
           />
         </div>
-        <span className="absolute right-4 top-4 text-3xl opacity-90 drop-shadow-sm">
-          {workshopEmoji(workshop.slug)}
-        </span>
       </div>
 
       <div className="p-5">

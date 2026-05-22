@@ -1,4 +1,4 @@
-import { workshopCoverPath } from "@/lib/workshop-meta";
+import { workshopCoverGradient, workshopEmoji } from "@/lib/workshop-meta";
 
 interface WorkshopCoverProps {
   slug: string;
@@ -6,16 +6,17 @@ interface WorkshopCoverProps {
   className?: string;
 }
 
-/** Native img — next/image does not reliably serve local SVG covers */
+/** CSS gradient + emoji — no external files (SVG assets were corrupt) */
 export function WorkshopCover({ slug, title, className = "" }: WorkshopCoverProps) {
   return (
-    // eslint-disable-next-line @next/next/no-img-element -- local SVG covers; next/image breaks SVG
-    <img
-      src={workshopCoverPath(slug)}
-      alt={title}
-      className={className}
-      loading="lazy"
-      decoding="async"
-    />
+    <div
+      role="img"
+      aria-label={title}
+      className={`flex items-center justify-center bg-gradient-to-br ${workshopCoverGradient(slug)} ${className}`}
+    >
+      <span className="text-[4.5rem] leading-none drop-shadow-sm sm:text-[5.5rem]" aria-hidden>
+        {workshopEmoji(slug)}
+      </span>
+    </div>
   );
 }
