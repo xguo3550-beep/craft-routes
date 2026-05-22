@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { notifyAuthChange } from "@/lib/auth/auth-events";
 import type { UserRole } from "@/lib/auth/types";
 
 interface AuthFormProps {
@@ -49,6 +50,8 @@ export function AuthForm({ mode, role = "customer" }: AuthFormProps) {
       if (!res.ok) {
         throw new Error(data.error ?? "Something went wrong");
       }
+
+      notifyAuthChange(data.user);
 
       if (data.user.role === "host") {
         router.push("/host/dashboard");

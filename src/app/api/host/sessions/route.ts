@@ -19,16 +19,21 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "workshop_id required" }, { status: 400 });
   }
 
-  const supabase = createServerClient();
-  if (supabase && !user.id.startsWith("demo-")) {
-    const { data: w } = await supabase
-      .from("workshops")
-      .select("id")
-      .eq("id", workshopId)
-      .eq("host_user_id", user.id)
-      .single();
+  const isDemoHost = user.id.startsWith("demo-");
+  const owned = demoWorkshopById(workshopId);
+  if (isDemoHost && (!owned || (owned as { host_user_id?: string }).host_user_id !== user.id)) {
+    return NextResponse.json({ error: "Workshop not found" }, { status: 404 });
+  }
 
-    if (!w) {
+  const supabase = createServerClient();
+  if (supabase) {
+    let ownerQuery = supabase.from("workshops").select("id").eq("id", workshopId);
+    if (!isDemoHost) {
+      ownerQuery = ownerQuery.eq("host_user_id", user.id);
+    }
+    const { data: w } = await ownerQuery.single();
+
+    if (!w && !owned) {
       return NextResponse.json({ error: "Workshop not found" }, { status: 404 });
     }
 
@@ -38,14 +43,16 @@ export async function GET(request: NextRequest) {
       .eq("workshop_id", workshopId)
       .order("starts_at", { ascending: true });
 
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+    if (!error) {
+      const fromDb = data ?? [];
+      const demo = demoSessionsForWorkshop(workshopId);
+      const seen = new Set(fromDb.map((s) => s.id));
+      const merged = [...fromDb, ...demo.filter((s) => !seen.has(s.id))];
+      return NextResponse.json({ sessions: merged });
     }
-    return NextResponse.json({ sessions: data ?? [] });
   }
 
-  const w = demoWorkshopById(workshopId);
-  if (!w || (w as { host_user_id?: string }).host_user_id !== user.id) {
+  if (!owned || (owned as { host_user_id?: string }).host_user_id !== user.id) {
     return NextResponse.json({ error: "Workshop not found" }, { status: 404 });
   }
 
@@ -70,22 +77,27 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid date" }, { status: 400 });
   }
 
+  const isDemoHost = user.id.startsWith("demo-");
+  const w = demoWorkshopById(workshop_id);
+  if (isDemoHost && (!w || (w as { host_user_id?: string }).host_user_id !== user.id)) {
+    return NextResponse.json({ error: "Workshop not found" }, { status: 404 });
+  }
+
   const supabase = createServerClient();
 
-  if (supabase && !user.id.startsWith("demo-")) {
-    const { data: w } = await supabase
+  if (supabase) {
+    let ownerQuery = supabase
       .from("workshops")
       .select("duration_hours")
-      .eq("id", workshop_id)
-      .eq("host_user_id", user.id)
-      .single();
-
-    if (!w) {
-      return NextResponse.json({ error: "Workshop not found" }, { status: 404 });
+      .eq("id", workshop_id);
+    if (!isDemoHost) {
+      ownerQuery = ownerQuery.eq("host_user_id", user.id);
     }
+    const { data: row } = await ownerQuery.single();
+    const durationHours = row?.duration_hours ?? w?.duration_hours ?? 3;
 
     const ends = new Date(start);
-    ends.setHours(ends.getHours() + w.duration_hours);
+    ends.setHours(ends.getHours() + durationHours);
 
     const { data, error } = await supabase
       .from("workshop_sessions")
@@ -93,18 +105,24 @@ export async function POST(request: NextRequest) {
         workshop_id,
         starts_at: start.toISOString(),
         ends_at: ends.toISOString(),
-        spots_available: Number(spots_available) || 8,
+        spots_available: Number(spots_available) || w?.max_participants || 8,
       })
       .select("*")
       .single();
 
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+    if (!error && data) {
+      demoUpsertSession(data as WorkshopSession);
+      return NextResponse.json({ session: data });
     }
-    return NextResponse.json({ session: data });
+
+    if (!isDemoHost) {
+      return NextResponse.json(
+        { error: error?.message ?? "Workshop not found" },
+        { status: error ? 500 : 404 }
+      );
+    }
   }
 
-  const w = demoWorkshopById(workshop_id);
   if (!w || (w as { host_user_id?: string }).host_user_id !== user.id) {
     return NextResponse.json({ error: "Workshop not found" }, { status: 404 });
   }

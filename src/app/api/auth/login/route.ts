@@ -6,6 +6,7 @@ import {
 } from "@/lib/auth/session";
 import { demoLogin } from "@/lib/auth/demo-store";
 import type { SessionUser } from "@/lib/auth/types";
+import { isSupabaseConfigured } from "@/lib/supabase/is-configured";
 import { createServerClient } from "@/lib/supabase/server";
 import { createAnonServerClient } from "@/lib/supabase/anon-server";
 
@@ -19,16 +20,23 @@ export async function POST(request: NextRequest) {
 
     const supabaseAdmin = createServerClient();
 
-    if (
-      supabaseAdmin &&
-      process.env.SUPABASE_SERVICE_ROLE_KEY &&
-      process.env.NEXT_PUBLIC_SUPABASE_URL
-    ) {
+    if (isSupabaseConfigured() && supabaseAdmin) {
       const anon = createAnonServerClient();
       if (anon) {
         const { data, error } = await anon.auth.signInWithPassword({ email, password });
         if (error) {
-          return NextResponse.json({ error: error.message }, { status: 401 });
+          // Allow local demo accounts when Supabase rejects credentials
+          const demo = demoLogin(email, password);
+          if (demo.user) {
+            const res = NextResponse.json({ user: demo.user });
+            res.cookies.set(COOKIE, encodeSession(demo.user), sessionCookieOptions());
+            return res;
+          }
+          const message =
+            error.message === "Invalid login credentials"
+              ? "Invalid email or password"
+              : error.message;
+          return NextResponse.json({ error: message }, { status: 401 });
         }
         if (!data.user) {
           return NextResponse.json({ error: "Login failed" }, { status: 401 });

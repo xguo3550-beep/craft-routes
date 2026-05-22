@@ -6,6 +6,7 @@ import {
 } from "@/lib/auth/session";
 import { demoRegister } from "@/lib/auth/demo-store";
 import type { SignupPayload, UserRole } from "@/lib/auth/types";
+import { isSupabaseConfigured } from "@/lib/supabase/is-configured";
 import { createServerClient } from "@/lib/supabase/server";
 
 export async function POST(request: NextRequest) {
@@ -23,7 +24,7 @@ export async function POST(request: NextRequest) {
 
     const supabase = createServerClient();
 
-    if (supabase && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    if (isSupabaseConfigured() && supabase) {
       const { data, error } = await supabase.auth.admin.createUser({
         email,
         password,

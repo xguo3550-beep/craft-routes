@@ -4,7 +4,6 @@ import { WorkshopCover } from "@/components/workshops/WorkshopCover";
 import { cityLabel, getWorkshopCity } from "@/lib/cities";
 import { formatPrice } from "@/lib/format";
 import { workshopBadge, workshopRating } from "@/lib/workshop-meta";
-import { workshopCoverImage } from "@/lib/workshop-cover-images";
 
 interface WorkshopCardProps {
   workshop: Workshop;
@@ -14,15 +13,14 @@ export function WorkshopCard({ workshop }: WorkshopCardProps) {
   const badge = workshopBadge(workshop.slug, workshop.featured);
   const rating = workshopRating(workshop.id);
   const city = getWorkshopCity(workshop.slug, workshop.region);
-  const coverSrc = workshopCoverImage(workshop.slug);
-
   return (
     <Link href={`/workshops/${workshop.slug}`} className="card-minglu group block overflow-hidden">
       <div className="relative aspect-[4/3] overflow-hidden bg-line">
         <WorkshopCover
           slug={workshop.slug}
           title={workshop.title}
-          src={coverSrc}
+          region={workshop.region}
+          src={workshop.image_url}
           className="transition duration-700 group-hover:scale-105"
         />
         <div

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Lora } from "next/font/google";
-import { Header } from "@/components/layout/Header";
+import { SiteHeader } from "@/components/layout/SiteHeader";
 import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
 
@@ -14,6 +14,8 @@ const lora = Lora({
   subsets: ["latin"],
   weight: ["600", "700"],
 });
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: {
@@ -34,7 +36,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${lora.variable} font-sans min-h-screen flex flex-col`}
       >
-        <Header />
+        <SiteHeader />
         <main className="flex-1">{children}</main>
         <Footer />
       </body>

@@ -58,7 +58,9 @@ export async function PATCH(
   const body = await request.json();
   const supabase = createServerClient();
 
-  if (supabase && !auth.user.id.startsWith("demo-")) {
+  const isDemoHost = auth.user.id.startsWith("demo-");
+
+  if (supabase) {
     const updates: Record<string, unknown> = {};
     const fields = [
       "title",
@@ -79,18 +81,24 @@ export async function PATCH(
       if (body[f] !== undefined) updates[f] = body[f];
     }
 
-    const { data, error } = await supabase
-      .from("workshops")
-      .update(updates)
-      .eq("id", params.id)
-      .eq("host_user_id", auth.user.id)
-      .select("*")
-      .single();
-
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+    let query = supabase.from("workshops").update(updates).eq("id", params.id);
+    if (!isDemoHost) {
+      query = query.eq("host_user_id", auth.user.id);
     }
-    return NextResponse.json({ workshop: data });
+
+    const { data, error } = await query.select("*").single();
+
+    if (!error && data) {
+      demoUpsertWorkshop(data as import("@/types").Workshop);
+      return NextResponse.json({ workshop: data });
+    }
+
+    if (!isDemoHost) {
+      return NextResponse.json(
+        { error: error?.message ?? "Workshop not found" },
+        { status: error ? 500 : 404 }
+      );
+    }
   }
 
   const existing = demoWorkshopById(params.id);

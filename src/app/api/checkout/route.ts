@@ -6,6 +6,7 @@ import { formatDate, formatPrice, formatTime, regionLabel } from "@/lib/format";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { demoUpsertBooking } from "@/lib/auth/demo-store";
 import { createServerClient } from "@/lib/supabase/server";
+import { absoluteWorkshopImageUrl } from "@/lib/workshop-cover-images";
 import { getStripe } from "@/lib/stripe";
 import type { Booking } from "@/types";
 
@@ -154,7 +155,7 @@ export async function POST(request: NextRequest) {
             product_data: {
               name: workshop.title,
               description: `Session on ${new Date(session.starts_at).toLocaleDateString("en-US", { timeZone: "Asia/Shanghai" })}`,
-              images: [workshop.image_url],
+              images: [absoluteWorkshopImageUrl(workshop.image_url)],
             },
             unit_amount: workshop.price_cents,
           },

@@ -1,4 +1,5 @@
 import { createServerClient } from "@/lib/supabase/server";
+import { demoAllHostWorkshopsForPublic, demoSessionsForWorkshop } from "@/lib/auth/demo-store";
 import { getWorkshopCity, isCitySlug } from "@/lib/cities";
 import {
   getMockWorkshopBySlug,
@@ -6,17 +7,13 @@ import {
   getMockSession,
 } from "@/lib/data/mock-workshops";
 import type { Workshop, WorkshopWithSessions, WorkshopSession } from "@/types";
-import { KNOWN_COVER_SLUGS, workshopCoverImage } from "@/lib/workshop-cover-images";
-import { workshopCoverPath } from "@/lib/workshop-meta";
+import { normalizeWorkshopImageUrl } from "@/lib/workshop-cover-images";
 
 function withCoverImage(workshop: Workshop): Workshop {
-  if (process.env.USE_LOCAL_WORKSHOP_IMAGES === "true" && KNOWN_COVER_SLUGS.has(workshop.slug)) {
-    return { ...workshop, image_url: workshopCoverPath(workshop.slug) };
-  }
-  if (KNOWN_COVER_SLUGS.has(workshop.slug)) {
-    return { ...workshop, image_url: workshopCoverImage(workshop.slug) };
-  }
-  return workshop;
+  return {
+    ...workshop,
+    image_url: normalizeWorkshopImageUrl(workshop),
+  };
 }
 
 function filterByCity(workshops: Workshop[], city: string): Workshop[] {
@@ -24,6 +21,18 @@ function filterByCity(workshops: Workshop[], city: string): Workshop[] {
   return workshops.filter(
     (w) => getWorkshopCity(w.slug, w.region) === city
   );
+}
+
+function mergeWorkshopLists(primary: Workshop[], extra: Workshop[]): Workshop[] {
+  const seen = new Set(primary.map((w) => w.slug));
+  const merged = [...primary];
+  for (const w of extra) {
+    if (!seen.has(w.slug)) {
+      merged.push(w);
+      seen.add(w.slug);
+    }
+  }
+  return merged;
 }
 
 export async function getWorkshops(
@@ -44,14 +53,20 @@ export async function getWorkshops(
 
   const { data, error } = await query;
 
-  let workshops: Workshop[];
-  if (error || !data?.length) {
-    workshops = getMockWorkshops(region, city);
-  } else {
-    workshops = (data as Workshop[]).map(withCoverImage);
-    if (city) {
-      workshops = filterByCity(workshops, city);
-    }
+  if (error) {
+    return getMockWorkshops(region, city);
+  }
+
+  const fromDb = (data ?? []).map((w) => withCoverImage(w as Workshop));
+  const base = fromDb.length > 0 ? fromDb : getMockWorkshops();
+  let workshops = mergeWorkshopLists(
+    base,
+    demoAllHostWorkshopsForPublic().map(withCoverImage)
+  );
+  if (city) {
+    workshops = filterByCity(workshops, city);
+  } else if (region && region !== "all") {
+    workshops = workshops.filter((w) => w.region === region);
   }
 
   return workshops;
@@ -62,13 +77,38 @@ export async function getFeaturedWorkshops(): Promise<Workshop[]> {
   return workshops.filter((w) => w.featured).slice(0, 3);
 }
 
+async function sessionsForWorkshop(
+  workshopId: string,
+  supabase: ReturnType<typeof createServerClient>
+): Promise<WorkshopSession[]> {
+  const demo = demoSessionsForWorkshop(workshopId);
+  if (!supabase) return demo;
+
+  const { data: sessions } = await supabase
+    .from("workshop_sessions")
+    .select("*")
+    .eq("workshop_id", workshopId)
+    .gte("starts_at", new Date().toISOString())
+    .gt("spots_available", 0)
+    .order("starts_at", { ascending: true });
+
+  const fromDb = (sessions ?? []) as WorkshopSession[];
+  const seen = new Set(fromDb.map((s) => s.id));
+  const merged = [...fromDb];
+  for (const s of demo) {
+    if (!seen.has(s.id)) merged.push(s);
+  }
+  return merged.sort((a, b) => a.starts_at.localeCompare(b.starts_at));
+}
+
 export async function getWorkshopBySlug(
   slug: string
 ): Promise<WorkshopWithSessions | null> {
+  const fromDemo = getMockWorkshopBySlug(slug);
   const supabase = createServerClient();
 
   if (!supabase) {
-    return getMockWorkshopBySlug(slug);
+    return fromDemo;
   }
 
   const { data: workshop, error } = await supabase
@@ -77,22 +117,15 @@ export async function getWorkshopBySlug(
     .eq("slug", slug)
     .single();
 
-  if (error || !workshop) {
-    return getMockWorkshopBySlug(slug);
+  if (!error && workshop) {
+    const w = withCoverImage(workshop as Workshop);
+    return {
+      ...w,
+      sessions: await sessionsForWorkshop(w.id, supabase),
+    };
   }
 
-  const { data: sessions } = await supabase
-    .from("workshop_sessions")
-    .select("*")
-    .eq("workshop_id", workshop.id)
-    .gte("starts_at", new Date().toISOString())
-    .gt("spots_available", 0)
-    .order("starts_at", { ascending: true });
-
-  return {
-    ...withCoverImage(workshop as Workshop),
-    sessions: (sessions ?? []) as WorkshopSession[],
-  };
+  return fromDemo;
 }
 
 export async function getSessionWithWorkshop(sessionId: string) {
@@ -117,6 +150,6 @@ export async function getSessionWithWorkshop(sessionId: string) {
 
   return {
     ...(sessionData as WorkshopSession),
-    workshop,
+    workshop: withCoverImage(workshop),
   };
 }

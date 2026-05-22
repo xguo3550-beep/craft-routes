@@ -5,6 +5,7 @@ const SLUG_EMOJI: Record<string, string> = {
   "shuimo-painting-pandas": "🐼",
   "tea-ceremony-mount-emei": "🍵",
   "nuodeng-salt-well-hike": "⛰️",
+  "cafe-cats": "🐱",
 };
 
 const SLUG_BADGE: Record<string, { label: string; className: string }> = {
@@ -22,16 +23,14 @@ const SLUG_BADGE: Record<string, { label: string; className: string }> = {
   },
 };
 
-import {
-  workshopCoverImage,
-  workshopCoverLocalPath,
-} from "@/lib/workshop-cover-images";
+import { resolveWorkshopCoverUrl } from "@/lib/workshop-cover-images";
 
-export function workshopCoverPath(slug: string): string {
-  if (process.env.USE_LOCAL_WORKSHOP_IMAGES === "true") {
-    return workshopCoverLocalPath(slug);
-  }
-  return workshopCoverImage(slug);
+export function workshopCoverPath(
+  slug: string,
+  region?: string,
+  title?: string
+): string {
+  return resolveWorkshopCoverUrl(slug, { region, title });
 }
 
 export function workshopEmoji(slug: string): string {

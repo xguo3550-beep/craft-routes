@@ -150,6 +150,26 @@ const BY_SLUG: Record<string, WorkshopDetailExtra> = {
   },
 };
 
+function genericExtra(title: string, region: string): WorkshopDetailExtra {
+  const isDali = region === "dali";
+  return {
+    category: "Experience",
+    minGuests: 1,
+    reviewCount: 12,
+    hostSubtitle: "Local host",
+    hostLanguages: ["English"],
+    whatYouDo: [
+      { icon: "✨", text: `Enjoy ${title} with a vetted local host` },
+      { icon: "📍", text: isDali ? "Explore Dali at an easy, local pace" : "Discover Sichuan with insider guidance" },
+    ],
+    goodToKnow: [
+      { icon: "🌍", text: "Hosted in English" },
+      { icon: "✓", text: "Free cancellation up to 48 hours before" },
+    ],
+    whatToBring: [{ icon: "📱", text: "Comfortable shoes and your phone for directions" }],
+  };
+}
+
 const DEFAULT_EXTRA: WorkshopDetailExtra = {
   category: "Workshop",
   minGuests: 1,
@@ -161,8 +181,8 @@ const DEFAULT_EXTRA: WorkshopDetailExtra = {
   whatToBring: [],
 };
 
-export function getWorkshopDetailExtra(slug: string): WorkshopDetailExtra {
-  const extra = BY_SLUG[slug] ?? DEFAULT_EXTRA;
+export function getWorkshopDetailExtra(slug: string, title?: string, region?: string): WorkshopDetailExtra {
+  const extra = BY_SLUG[slug] ?? (title && region ? genericExtra(title, region) : DEFAULT_EXTRA);
   return {
     ...extra,
     whatYouDo:

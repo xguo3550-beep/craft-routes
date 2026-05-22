@@ -32,6 +32,9 @@ yarn-error.log*
 .env
 .env*.local
 
+# local demo auth + host data (dev only)
+.data/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

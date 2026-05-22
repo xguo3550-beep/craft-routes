@@ -1,24 +1,100 @@
-/** Curated cover photos — thematic, high quality (Unsplash) */
-const COVER_PARAMS = "auto=format&fit=crop&w=1200&h=900&q=85";
+/** Workshop covers — served from /public/images/workshops (reliable, no hotlink blocks). */
 
-export const WORKSHOP_COVER_IMAGES: Record<string, string> = {
-  "bai-ethnic-tie-dye": `https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?${COVER_PARAMS}`,
-  "erhai-cycling-pottery": `https://images.unsplash.com/photo-1470071459605-3b5ec3a8b698?${COVER_PARAMS}`,
-  "sichuan-hotpot-cooking": `https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?${COVER_PARAMS}`,
-  "shuimo-painting-pandas": `https://images.unsplash.com/photo-1563492065599-3520f775eeed?${COVER_PARAMS}`,
-  "tea-ceremony-mount-emei": `https://images.unsplash.com/photo-1571930171630-aa5e01b390c2?${COVER_PARAMS}`,
-  "nuodeng-salt-well-hike": `https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?${COVER_PARAMS}`,
-};
+export const LOCAL_WORKSHOP_COVERS = [
+  "bai-ethnic-tie-dye",
+  "erhai-cycling-pottery",
+  "sichuan-hotpot-cooking",
+  "shuimo-painting-pandas",
+  "tea-ceremony-mount-emei",
+  "nuodeng-salt-well-hike",
+  "cafe-cats",
+  "dali-experience",
+  "sichuan-experience",
+  "default-experience",
+] as const;
 
-export const KNOWN_COVER_SLUGS = new Set(Object.keys(WORKSHOP_COVER_IMAGES));
+export type LocalCoverKey = (typeof LOCAL_WORKSHOP_COVERS)[number];
 
-export function workshopCoverImage(slug: string): string {
-  return (
-    WORKSHOP_COVER_IMAGES[slug] ??
-    `https://images.unsplash.com/photo-1506905925346-21bda4d32df4?${COVER_PARAMS}`
-  );
+export const KNOWN_COVER_SLUGS = new Set<string>(LOCAL_WORKSHOP_COVERS);
+
+const REMOTE_BLOCKED = /images\.(unsplash|pexels)\.com/i;
+
+export function workshopCoverLocalPath(key: LocalCoverKey | string): string {
+  return `/images/workshops/${key}.jpg`;
 }
 
-export function workshopCoverLocalPath(slug: string): string {
-  return `/images/workshops/${slug}.jpg`;
+/** Pick the best bundled cover for a workshop slug / title / region. */
+export function pickCoverKey(
+  slug: string,
+  region?: string,
+  title?: string
+): LocalCoverKey {
+  if (KNOWN_COVER_SLUGS.has(slug)) {
+    return slug as LocalCoverKey;
+  }
+
+  const hay = `${slug} ${title ?? ""}`.toLowerCase();
+
+  if (/cat|cafe|coffee|gigi|kitten/.test(hay)) return "cafe-cats";
+  if (/tie.?dye|indigo|textile|bai/.test(hay)) return "bai-ethnic-tie-dye";
+  if (/pottery|clay|ceramic/.test(hay)) return "erhai-cycling-pottery";
+  if (/cycl|bike|erhai|lake/.test(hay)) return "erhai-cycling-pottery";
+  if (/hotpot|hot.?pot|cook|sichuan food|chili/.test(hay)) return "sichuan-hotpot-cooking";
+  if (/panda|ink|paint|shuimo|calligraphy/.test(hay)) return "shuimo-painting-pandas";
+  if (/tea|ceremony|matcha/.test(hay)) return "tea-ceremony-mount-emei";
+  if (/hike|trail|mountain|village|salt/.test(hay)) return "nuodeng-salt-well-hike";
+
+  if (region === "dali") return "dali-experience";
+  if (region === "sichuan") return "sichuan-experience";
+
+  return "default-experience";
+}
+
+export function resolveWorkshopCoverUrl(
+  slug: string,
+  options?: { region?: string; title?: string; imageUrl?: string | null }
+): string {
+  const imageUrl = options?.imageUrl?.trim();
+  if (imageUrl?.startsWith("/images/workshops/")) {
+    return imageUrl;
+  }
+
+  const key = pickCoverKey(slug, options?.region, options?.title);
+  return workshopCoverLocalPath(key);
+}
+
+/** @deprecated Use resolveWorkshopCoverUrl — kept for imports */
+export function workshopCoverImage(
+  slug: string,
+  region?: string,
+  title?: string
+): string {
+  return resolveWorkshopCoverUrl(slug, { region, title });
+}
+
+/** Replace broken remote URLs (Unsplash/Pexels 403) with bundled covers. */
+export function normalizeWorkshopImageUrl(workshop: {
+  slug: string;
+  region?: string;
+  title?: string;
+  image_url?: string | null;
+}): string {
+  const url = workshop.image_url?.trim() ?? "";
+  if (url.startsWith("/images/workshops/")) return url;
+  if (url && !REMOTE_BLOCKED.test(url)) return url;
+  return resolveWorkshopCoverUrl(workshop.slug, {
+    region: workshop.region,
+    title: workshop.title,
+    imageUrl: url,
+  });
+}
+
+/** Stripe / OG need absolute URLs for paths under /public */
+export function absoluteWorkshopImageUrl(pathOrUrl: string): string {
+  if (pathOrUrl.startsWith("http://") || pathOrUrl.startsWith("https://")) {
+    return pathOrUrl;
+  }
+  const base =
+    process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "") || "http://localhost:3000";
+  return `${base}${pathOrUrl.startsWith("/") ? pathOrUrl : `/${pathOrUrl}`}`;
 }

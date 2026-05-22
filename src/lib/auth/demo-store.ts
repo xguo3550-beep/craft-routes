@@ -1,5 +1,10 @@
 import type { Booking, Workshop, WorkshopSession } from "@/types";
 import type { SessionUser, UserRole } from "@/lib/auth/types";
+import {
+  loadDemoStoreFromDisk,
+  saveDemoStoreToDisk,
+  type PersistedDemoUser,
+} from "@/lib/auth/demo-persist";
 
 interface DemoUser extends SessionUser {
   password: string;
@@ -10,7 +15,36 @@ type GlobalDemo = {
   workshops: Map<string, Workshop>;
   sessions: Map<string, WorkshopSession>;
   bookings: Map<string, Booking>;
+  hydrated: boolean;
 };
+
+function persist(s: GlobalDemo) {
+  saveDemoStoreToDisk({
+    users: s.users.values(),
+    workshops: s.workshops.values(),
+    sessions: s.sessions.values(),
+    bookings: s.bookings.values(),
+  });
+}
+
+function hydrate(s: GlobalDemo) {
+  if (s.hydrated) return;
+  s.hydrated = true;
+  const disk = loadDemoStoreFromDisk();
+  if (!disk) return;
+  for (const u of disk.users) {
+    s.users.set(u.email.toLowerCase(), u as DemoUser);
+  }
+  for (const w of disk.workshops) {
+    s.workshops.set(w.id, w);
+  }
+  for (const sess of disk.sessions) {
+    s.sessions.set(sess.id, sess);
+  }
+  for (const b of disk.bookings) {
+    s.bookings.set(b.id, b);
+  }
+}
 
 function store(): GlobalDemo {
   const g = globalThis as unknown as { __crDemo?: GlobalDemo };
@@ -20,8 +54,10 @@ function store(): GlobalDemo {
       workshops: new Map(),
       sessions: new Map(),
       bookings: new Map(),
+      hydrated: false,
     };
   }
+  hydrate(g.__crDemo);
   return g.__crDemo;
 }
 
@@ -49,6 +85,7 @@ export function demoRegister(
     password,
   };
   s.users.set(key, user);
+  persist(s);
   const { password: _, ...session } = user;
   return { user: session };
 }
@@ -76,21 +113,28 @@ export function demoGetUserById(id: string): SessionUser | null {
 }
 
 export function demoHostWorkshops(hostId: string): Workshop[] {
-  return [...store().workshops.values()].filter((w) => (w as Workshop & { host_user_id?: string }).host_user_id === hostId);
+  return [...store().workshops.values()].filter(
+    (w) => (w as Workshop & { host_user_id?: string }).host_user_id === hostId
+  );
 }
 
 export function demoUpsertWorkshop(workshop: Workshop): Workshop {
-  store().workshops.set(workshop.id, workshop);
+  const s = store();
+  s.workshops.set(workshop.id, workshop);
+  persist(s);
   return workshop;
 }
 
 export function demoDeleteWorkshop(id: string, hostId: string): boolean {
-  const w = store().workshops.get(id);
-  if (!w || (w as Workshop & { host_user_id?: string }).host_user_id !== hostId) return false;
-  store().workshops.delete(id);
-  for (const [sid, sess] of store().sessions) {
-    if (sess.workshop_id === id) store().sessions.delete(sid);
+  const s = store();
+  const w = s.workshops.get(id);
+  if (!w || (w as Workshop & { host_user_id?: string }).host_user_id !== hostId)
+    return false;
+  s.workshops.delete(id);
+  for (const [sid, sess] of s.sessions) {
+    if (sess.workshop_id === id) s.sessions.delete(sid);
   }
+  persist(s);
   return true;
 }
 
@@ -105,29 +149,36 @@ export function demoSessionsForWorkshop(workshopId: string): WorkshopSession[] {
 }
 
 export function demoUpsertSession(session: WorkshopSession): WorkshopSession {
-  store().sessions.set(session.id, session);
+  const s = store();
+  s.sessions.set(session.id, session);
+  persist(s);
   return session;
 }
 
 export function demoDeleteSession(id: string, hostId: string): boolean {
-  const sess = store().sessions.get(id);
+  const s = store();
+  const sess = s.sessions.get(id);
   if (!sess) return false;
-  const w = store().workshops.get(sess.workshop_id);
-  if (!w || (w as Workshop & { host_user_id?: string }).host_user_id !== hostId) return false;
-  store().sessions.delete(id);
+  const w = s.workshops.get(sess.workshop_id);
+  if (!w || (w as Workshop & { host_user_id?: string }).host_user_id !== hostId)
+    return false;
+  s.sessions.delete(id);
+  persist(s);
   return true;
 }
 
 export function demoCustomerBookings(customerId: string, email: string): Booking[] {
   return [...store().bookings.values()].filter(
     (b) =>
-      (b as Booking & { customer_user_id?: string }).customer_user_id === customerId ||
-      b.guest_email.toLowerCase() === email.toLowerCase()
+      (b as Booking & { customer_user_id?: string }).customer_user_id ===
+        customerId || b.guest_email.toLowerCase() === email.toLowerCase()
   );
 }
 
 export function demoUpsertBooking(booking: Booking): Booking {
-  store().bookings.set(booking.id, booking);
+  const s = store();
+  s.bookings.set(booking.id, booking);
+  persist(s);
   return booking;
 }
 

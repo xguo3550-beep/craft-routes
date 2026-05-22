@@ -1,3 +1,4 @@
+import { isSupabaseConfigured } from "@/lib/supabase/is-configured";
 import { createServerClient } from "@/lib/supabase/server";
 import { getSessionUser } from "@/lib/auth/session";
 import { demoGetUserById } from "@/lib/auth/demo-store";
@@ -8,7 +9,7 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
   if (!cookieUser) return null;
 
   const supabase = createServerClient();
-  if (!supabase || cookieUser.id.startsWith("demo-")) {
+  if (!isSupabaseConfigured() || !supabase || cookieUser.id.startsWith("demo-")) {
     return demoGetUserById(cookieUser.id) ?? cookieUser;
   }
 
@@ -31,8 +32,5 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
 }
 
 export function useSupabaseAuth(): boolean {
-  return Boolean(
-    process.env.NEXT_PUBLIC_SUPABASE_URL &&
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  );
+  return isSupabaseConfigured();
 }

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { DetailListSection } from "@/components/workshops/DetailListSection";
@@ -6,10 +7,7 @@ import { getWorkshopBySlug } from "@/lib/data/workshops";
 import { getWorkshopDetailExtra } from "@/lib/workshop-detail-content";
 import { formatPrice, regionLabel } from "@/lib/format";
 import { cityDisplayLabel, getWorkshopCity } from "@/lib/cities";
-import {
-  workshopEmoji,
-  workshopRating,
-} from "@/lib/workshop-meta";
+import { workshopRating } from "@/lib/workshop-meta";
 
 interface PageProps {
   params: { slug: string };
@@ -31,7 +29,7 @@ export default async function WorkshopDetailPage({ params }: PageProps) {
 
   if (!workshop) notFound();
 
-  const extra = getWorkshopDetailExtra(slug);
+  const extra = getWorkshopDetailExtra(slug, workshop.title, workshop.region);
   const rating = workshopRating(workshop.id);
   const citySlug = getWorkshopCity(slug, workshop.region);
   const cityLine = cityDisplayLabel(citySlug).toUpperCase();
@@ -46,10 +44,22 @@ export default async function WorkshopDetailPage({ params }: PageProps) {
           ← Back to experiences
         </Link>
 
+        <div className="relative mt-8 aspect-[16/9] overflow-hidden rounded-2xl bg-line shadow-sm">
+          <Image
+            src={workshop.image_url}
+            alt={workshop.title}
+            fill
+            priority
+            className="object-cover"
+            sizes="(max-width: 1280px) 100vw, 1280px"
+          />
+          <div
+            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/40 via-transparent to-transparent"
+            aria-hidden
+          />
+        </div>
+
         <header className="mt-8">
-          <span className="text-4xl" aria-hidden>
-            {workshopEmoji(slug)}
-          </span>
           <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-brand-600">
             {cityLine} · {extra.category}
           </p>
