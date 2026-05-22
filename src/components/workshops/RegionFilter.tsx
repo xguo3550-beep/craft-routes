@@ -3,36 +3,42 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-const regions = [
-  { value: "all", label: "All Regions" },
-  { value: "dali", label: "Dali, Yunnan" },
-  { value: "sichuan", label: "Sichuan" },
+const categories = [
+  { value: "all", label: "All", href: "/workshops" },
+  { value: "dali", label: "Dali", href: "/workshops?region=dali" },
+  { value: "sichuan", label: "Sichuan", href: "/workshops?region=sichuan" },
+  {
+    value: "cooking",
+    label: "Cooking",
+    href: "/workshops?region=sichuan",
+  },
+  { value: "crafts", label: "Crafts", href: "/workshops?region=dali" },
+  { value: "tea", label: "Tea ceremony", href: "/workshops/shuimo-painting-pandas" },
 ];
 
-export function RegionFilter() {
+export function RegionFilter({ compact }: { compact?: boolean }) {
   const searchParams = useSearchParams();
-  const current = searchParams.get("region") ?? "all";
+  const region = searchParams.get("region") ?? "all";
+
+  const pills = compact
+    ? categories.slice(0, 3)
+    : categories;
 
   return (
     <div className="flex flex-wrap gap-2">
-      {regions.map((region) => {
-        const href =
-          region.value === "all"
-            ? "/workshops"
-            : `/workshops?region=${region.value}`;
-        const active = current === region.value;
+      {pills.map((cat) => {
+        const active =
+          cat.value === "all"
+            ? !region || region === "all"
+            : region === cat.value;
 
         return (
           <Link
-            key={region.value}
-            href={href}
-            className={`rounded-full px-4 py-2 text-sm font-medium transition ${
-              active
-                ? "bg-brand-600 text-white shadow-sm"
-                : "bg-white text-earth-700 ring-1 ring-earth-200 hover:bg-earth-50"
-            }`}
+            key={cat.label}
+            href={cat.href}
+            className={active ? "pill-active" : "pill-inactive"}
           >
-            {region.label}
+            {cat.label}
           </Link>
         );
       })}

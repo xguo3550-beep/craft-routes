@@ -95,6 +95,9 @@ export async function POST(request: NextRequest) {
           booking_id: bookingId,
           email: guestEmail,
           email_sent: emailResult.sent ? "true" : "false",
+          ...(emailResult.error
+            ? { email_error: emailResult.error.slice(0, 200) }
+            : {}),
           payment: "demo",
           session_id: sessionId,
           guest_name: guestName,

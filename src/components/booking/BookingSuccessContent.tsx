@@ -7,6 +7,7 @@ interface BookingSuccessContentProps {
   bookingId?: string;
   email?: string;
   emailSentParam?: string;
+  emailError?: string;
   payment?: string;
   sessionId?: string;
   guestName?: string;
@@ -17,6 +18,7 @@ export function BookingSuccessContent({
   bookingId,
   email,
   emailSentParam,
+  emailError,
   payment,
   sessionId,
   guestName,
@@ -90,25 +92,25 @@ export function BookingSuccessContent({
       <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-100 text-3xl">
         ✓
       </div>
-      <h1 className="mt-6 font-display text-3xl font-bold text-earth-900">
+      <h1 className="mt-6 font-display text-3xl font-bold text-ink">
         Booking confirmed!
       </h1>
 
       {emailSent === true && email && (
-        <p className="mt-4 text-earth-600">
+        <p className="mt-4 text-muted">
           We&apos;ve sent a confirmation email to{" "}
-          <span className="font-medium text-earth-900">{email}</span> with your
+          <span className="font-medium text-ink">{email}</span> with your
           meeting point, what to bring, and your host&apos;s details.
         </p>
       )}
 
       {emailPending && (
-        <p className="mt-4 text-earth-600">
+        <p className="mt-4 text-muted">
           Sending your confirmation email
           {email ? (
             <>
               {" "}
-              to <span className="font-medium text-earth-900">{email}</span>
+              to <span className="font-medium text-ink">{email}</span>
             </>
           ) : null}
           …
@@ -135,23 +137,30 @@ export function BookingSuccessContent({
             </a>{" "}
             and we&apos;ll resend your details.
           </p>
+          {emailError && (
+            <p className="mt-2 font-mono text-xs text-amber-800">
+              Reason: {emailError}
+            </p>
+          )}
           <p className="mt-2 text-xs text-amber-800">
-            Tip: add <code className="rounded bg-amber-100 px-1">RESEND_API_KEY</code> in
-            Vercel (or <code className="rounded bg-amber-100 px-1">.env.local</code>) to
-            enable emails.
+            Checklist: (1) Add <code className="rounded bg-amber-100 px-1">RESEND_API_KEY</code>{" "}
+            and <code className="rounded bg-amber-100 px-1">EMAIL_FROM</code> in Vercel →
+            redeploy. (2) With test sender{" "}
+            <code className="rounded bg-amber-100 px-1">onboarding@resend.dev</code>, book using
+            the same email as your Resend account.
           </p>
         </div>
       )}
 
       {emailSent === null && !emailPending && !email && (
-        <p className="mt-4 text-earth-600">
+        <p className="mt-4 text-muted">
           Thank you for booking with Craft Routes. Save your reference below for
           your records.
         </p>
       )}
 
       {reference && (
-        <p className="mt-4 rounded-lg bg-earth-50 px-4 py-3 text-sm text-earth-700">
+        <p className="mt-4 rounded-lg bg-cream px-4 py-3 text-sm text-muted">
           Reference: <span className="font-mono font-medium">{reference}</span>
         </p>
       )}

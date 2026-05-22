@@ -26,3 +26,12 @@ export function formatTime(iso: string): string {
 export function regionLabel(region: string): string {
   return region === "dali" ? "Dali, Yunnan" : "Sichuan";
 }
+
+export function formatShortDate(iso: string): string {
+  return new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    timeZone: "Asia/Shanghai",
+  }).format(new Date(iso));
+}

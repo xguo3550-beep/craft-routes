@@ -3,8 +3,8 @@ import Link from "next/link";
 export default function NotFound() {
   return (
     <div className="mx-auto max-w-lg px-4 py-24 text-center">
-      <h1 className="font-display text-4xl font-bold text-earth-900">404</h1>
-      <p className="mt-4 text-earth-600">This workshop could not be found.</p>
+      <h1 className="font-display text-4xl font-bold text-ink">404</h1>
+      <p className="mt-4 text-muted">This workshop could not be found.</p>
       <Link href="/workshops" className="btn-primary mt-8 inline-block">
         Browse workshops
       </Link>

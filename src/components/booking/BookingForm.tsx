@@ -78,7 +78,7 @@ export function BookingForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div>
-        <label htmlFor="session" className="block text-sm font-medium text-earth-800">
+        <label htmlFor="session" className="block text-sm font-medium text-ink">
           Select a date
         </label>
         <select
@@ -86,7 +86,7 @@ export function BookingForm({
           value={sessionId}
           onChange={(e) => setSessionId(e.target.value)}
           required
-          className="mt-1.5 w-full rounded-xl border border-earth-300 bg-white px-4 py-3 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
+          className="mt-1.5 w-full rounded-xl border border-line bg-white px-4 py-3 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
         >
           {sessions.map((s) => (
             <option key={s.id} value={s.id}>
@@ -98,14 +98,14 @@ export function BookingForm({
       </div>
 
       <div>
-        <label htmlFor="guests" className="block text-sm font-medium text-earth-800">
+        <label htmlFor="guests" className="block text-sm font-medium text-ink">
           Number of guests
         </label>
         <select
           id="guests"
           value={guestsCount}
           onChange={(e) => setGuestsCount(Number(e.target.value))}
-          className="mt-1.5 w-full rounded-xl border border-earth-300 bg-white px-4 py-3 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
+          className="mt-1.5 w-full rounded-xl border border-line bg-white px-4 py-3 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
         >
           {Array.from({ length: maxGuests }, (_, i) => i + 1).map((n) => (
             <option key={n} value={n}>
@@ -116,7 +116,7 @@ export function BookingForm({
       </div>
 
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-earth-800">
+        <label htmlFor="name" className="block text-sm font-medium text-ink">
           Full name
         </label>
         <input
@@ -126,12 +126,12 @@ export function BookingForm({
           value={guestName}
           onChange={(e) => setGuestName(e.target.value)}
           placeholder="Your name"
-          className="mt-1.5 w-full rounded-xl border border-earth-300 bg-white px-4 py-3 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
+          className="mt-1.5 w-full rounded-xl border border-line bg-white px-4 py-3 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
         />
       </div>
 
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-earth-800">
+        <label htmlFor="email" className="block text-sm font-medium text-ink">
           Email
         </label>
         <input
@@ -141,7 +141,7 @@ export function BookingForm({
           value={guestEmail}
           onChange={(e) => setGuestEmail(e.target.value)}
           placeholder="you@example.com"
-          className="mt-1.5 w-full rounded-xl border border-earth-300 bg-white px-4 py-3 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
+          className="mt-1.5 w-full rounded-xl border border-line bg-white px-4 py-3 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
         />
       </div>
 
@@ -151,16 +151,16 @@ export function BookingForm({
         </p>
       )}
 
-      <div className="rounded-xl bg-earth-50 p-4">
+      <div className="rounded-xl bg-cream p-4">
         <div className="flex justify-between text-sm">
-          <span className="text-earth-600">
+          <span className="text-muted">
             {formatPrice(workshop.price_cents)} × {guestsCount}
           </span>
-          <span className="font-semibold text-earth-900">
+          <span className="font-semibold text-ink">
             {formatPrice(totalCents, workshop.currency)}
           </span>
         </div>
-        <p className="mt-2 text-xs text-earth-500">
+        <p className="mt-2 text-xs text-muted">
           Secure payment via Stripe. Free cancellation up to 48 hours before.
         </p>
       </div>
