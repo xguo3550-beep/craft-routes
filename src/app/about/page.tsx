@@ -3,24 +3,24 @@ import { CONTACT_EMAIL, SITE_NAME, siteTitle } from "@/lib/brand";
 
 const values = [
   {
+    icon: "✨",
+    title: "Meaningful luxury",
+    text: "We price for atmosphere, host time, and intimacy — not footfall. No race to the bottom.",
+  },
+  {
+    icon: "👥",
+    title: "Intimate by design",
+    text: "Most sessions cap at six guests. Conversational, thoughtful, never a 20-person tour bus.",
+  },
+  {
+    icon: "🎯",
+    title: "Educated cultural consumers",
+    text: "Built for designers, founders, and curious professionals 28–45 — not mass tourism.",
+  },
+  {
     icon: "🤝",
-    title: "Authentic connection",
-    text: "No scripts. Real hosts sharing what they genuinely love in Dali and Sichuan.",
-  },
-  {
-    icon: "🌱",
-    title: "Fair to hosts",
-    text: "Hosts keep the majority of every booking. We take a small platform fee.",
-  },
-  {
-    icon: "🔍",
-    title: "Quality over scale",
-    text: "We'd rather have brilliant hosts than hundreds of mediocre listings.",
-  },
-  {
-    icon: "♿",
-    title: "Accessible",
-    text: "Every experience notes language, dietary needs, and accessibility where relevant.",
+    title: "Hosts paid fairly",
+    text: "Premium pricing lets artisans and tea makers host fewer groups, with more respect.",
   },
 ];
 
@@ -67,8 +67,9 @@ export default function AboutPage() {
             learning gongfu tea from someone who studied for years.
           </p>
           <p className="mt-4 leading-relaxed text-muted">
-            Every host is personally vetted. We only list experiences we would send our
-            own family to.
+            We are not Klook, Viator, or a $25 walking-tour marketplace. Every host is
+            vetted; we would rather list five exceptional afternoons than fifty mediocre
+            ones.
           </p>
         </section>
 

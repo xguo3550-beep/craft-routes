@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "images:generate": "bash scripts/generate-workshop-covers.sh",
-    "images:download": "bash scripts/download-workshop-images.sh"
+    "images:download": "node scripts/fetch-photos.mjs"
   },
   "dependencies": {
     "@stripe/stripe-js": "^4.0.0",

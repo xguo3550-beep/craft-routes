@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { HomeHero } from "@/components/home/HomeHero";
 import { TrustBar } from "@/components/home/TrustBar";
 import { HowItWorks } from "@/components/home/HowItWorks";
+import { PremiumNote } from "@/components/home/PremiumNote";
 import { Testimonials } from "@/components/home/Testimonials";
 import { WorkshopCard } from "@/components/workshops/WorkshopCard";
 import { RegionFilter } from "@/components/workshops/RegionFilter";
@@ -30,9 +31,9 @@ export default async function HomePage() {
             Five stories from Southwest China
           </h2>
           <p className="mt-3 text-muted leading-relaxed">
-            Each experience is a host portrait — tea lifestyle, indigo craft,
-            lakeside clay, teahouse afternoons, and heritage walking. Quality over
-            quantity.
+            Each is a host portrait for travellers 28–45 with real spending power —
+            designers, founders, art directors, DINK couples. Intimate groups, premium
+            pricing, no mass-tour energy.
           </p>
         </div>
 
@@ -44,6 +45,7 @@ export default async function HomePage() {
       </section>
 
       <HowItWorks />
+      <PremiumNote />
       <Testimonials />
 
       <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">

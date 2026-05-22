@@ -20,27 +20,27 @@ export const CURATED_SLUGS = [
 
 export const EXPERIENCE_EDITORIAL: Record<string, ExperienceEditorial> = {
   "bai-ethnic-tie-dye": {
-    tagline: "Indigo, thread & Bai courtyard life — for design and craft lovers",
+    tagline: "$195 · private courtyard indigo · max 6 — for design & fashion people",
     mood: "Textiles",
     order: 1,
   },
   "tea-ceremony-mount-emei": {
-    tagline: "Tea Horse Road stories, forest air & fire-roasted leaves",
+    tagline: "$180 · fire-roasted tea, lunch, transport & sunset gongfu · max 6",
     mood: "Tea",
     order: 2,
   },
   "erhai-cycling-pottery": {
-    tagline: "Hand-built ceramics by a mountain lake — slow Dali, not mega-China",
+    tagline: "$240 · lakeside clay & slow Erhai light · intimate studio",
     mood: "Ceramics",
     order: 3,
   },
   "chengdu-tea-house-afternoon": {
-    tagline: "Old tea houses, mahjong murmur & a family kitchen — not a hotpot challenge",
+    tagline: "$165 · teahouse ritual & family kitchen · max 6 guests",
     mood: "Tea life",
     order: 4,
   },
   "nuodeng-salt-well-hike": {
-    tagline: "A hidden salt village on the Tea Horse Road — heritage & slow walking",
+    tagline: "$220 · heritage village, Bai lunch & historian host · small group",
     mood: "Heritage",
     order: 5,
   },

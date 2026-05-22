@@ -9,8 +9,8 @@ export function Footer() {
           <div>
             <p className="font-display text-xl font-bold text-ink">{SITE_NAME}</p>
             <p className="mt-2 text-sm leading-relaxed text-muted">
-              Local experiences in Dali and Sichuan — curated afternoons with
-              hosts, not tour buses or checklist sightseeing.
+              Quiet luxury cultural travel in Yunnan & Sichuan — intimate host-led
+              afternoons for culturally curious professionals, not mass tourism.
             </p>
           </div>
           <div>

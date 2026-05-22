@@ -1,19 +1,19 @@
 const steps = [
   {
-    title: "Find your host",
-    desc: "Curated experiences in Dali and Sichuan — each led by a real local, not a tour script.",
+    title: "Choose a salon",
+    desc: "Five curated experiences — vetted hosts, premium pricing, max six guests.",
   },
   {
-    title: "Join a small group",
-    desc: "Pick a date, reserve your place, and get a warm confirmation by email.",
+    title: "Reserve your place",
+    desc: "Secure checkout. You are buying atmosphere and host time, not a discount tour.",
   },
   {
-    title: "Spend the afternoon together",
-    desc: "Cook, make, walk, or sit for tea — at their table, studio, or village.",
+    title: "Spend the afternoon",
+    desc: "Tea, indigo, clay, or village pace — conversational, unhurried, human scale.",
   },
   {
-    title: "Leave with a story",
-    desc: "Skills, memories, and often something you made with your own hands.",
+    title: "Return changed",
+    desc: "The kind of memory creative professionals pay for — and share quietly.",
   },
 ];
 

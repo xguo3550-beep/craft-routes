@@ -54,11 +54,10 @@ export function WorkshopBookingPanel({ workshop, sessions }: WorkshopBookingPane
         {formatPrice(workshop.price_cents, workshop.currency)}
         <span className="text-base font-normal text-muted"> per person</span>
       </p>
-      {extra.minGuests > 1 && (
-        <p className="mt-1 text-sm text-muted">
-          Minimum {extra.minGuests} guests · up to {workshop.max_participants} per session
-        </p>
-      )}
+      <p className="mt-1 text-sm text-muted">
+        Intimate session · max {workshop.max_participants} guests
+        {extra.minGuests > 1 ? ` · minimum ${extra.minGuests}` : ""}
+      </p>
 
       <div className="mt-6">
         <p className="text-sm font-medium text-ink">Select a date</p>
@@ -124,7 +123,7 @@ export function WorkshopBookingPanel({ workshop, sessions }: WorkshopBookingPane
         Join this experience
       </Link>
       <p className="mt-3 text-center text-xs text-muted">
-        You won&apos;t be charged yet · Free cancellation 48h before
+        Secure checkout · Free cancellation 48h before · Premium small-group experience
       </p>
     </div>
   );

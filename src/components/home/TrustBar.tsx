@@ -1,8 +1,10 @@
+import { POSITIONING } from "@/lib/brand";
+
 export function TrustBar() {
   const items = [
-    "Curated — quality over quantity",
-    "Meet artists, cooks & craftspeople",
-    "Small groups · Free cancel 48h before",
+    "Fewer listings, higher standards",
+    POSITIONING.groupSize,
+    "Priced for identity, not volume",
   ];
 
   return (

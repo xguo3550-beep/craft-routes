@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Workshop } from "@/types";
 import { WorkshopCover } from "@/components/workshops/WorkshopCover";
 import { cityLabel, getWorkshopCity } from "@/lib/cities";
+import { intimateGroupLabel } from "@/lib/brand";
 import { formatPrice } from "@/lib/format";
 import { experienceEditorial } from "@/lib/editorial";
 import { workshopBadge, workshopRating } from "@/lib/workshop-meta";
@@ -65,7 +66,7 @@ export function WorkshopCard({ workshop }: WorkshopCardProps) {
 
         <div className="mt-3 flex items-center justify-between border-t border-line pt-3 text-sm text-muted">
           <span>
-            {workshop.duration_hours} hrs · up to {workshop.max_participants}
+            {workshop.duration_hours} hrs · {intimateGroupLabel(workshop.max_participants)}
           </span>
           <span className="font-medium text-brand-600">★ {rating}</span>
         </div>

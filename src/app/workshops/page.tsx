@@ -47,7 +47,7 @@ export default async function WorkshopsPage({ searchParams }: PageProps) {
             {title}
           </h1>
           <p className="mt-3 max-w-2xl text-muted">
-            {workshops.length} experiences · English instruction · Small groups
+            {workshops.length} curated experiences · intimate groups · premium pricing
           </p>
         </div>
       </div>

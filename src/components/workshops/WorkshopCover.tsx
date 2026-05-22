@@ -3,9 +3,9 @@
 import Image from "next/image";
 import { useState } from "react";
 import {
+  curatedPhotoUrl,
   pickCoverKey,
   resolveWorkshopCoverUrl,
-  workshopCoverLocalPath,
 } from "@/lib/workshop-cover-images";
 
 interface WorkshopCoverProps {
@@ -26,7 +26,7 @@ export function WorkshopCover({
   priority = false,
 }: WorkshopCoverProps) {
   const primary = resolveWorkshopCoverUrl(slug, { region, title, imageUrl: src });
-  const fallback = workshopCoverLocalPath(pickCoverKey(slug, region, title));
+  const fallback = curatedPhotoUrl(pickCoverKey(slug, region, title));
   const [imgSrc, setImgSrc] = useState(primary);
 
   return (
