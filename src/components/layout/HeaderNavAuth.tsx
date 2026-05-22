@@ -42,7 +42,7 @@ export async function HeaderNavAuth({ variant = "desktop" }: HeaderNavAuthProps)
           Sign up
         </Link>
         <Link href="/workshops" className="btn-primary !rounded-lg !px-5 !py-2.5 text-sm">
-          Book now
+          Explore
         </Link>
       </div>
     );
@@ -78,7 +78,7 @@ export async function HeaderNavAuth({ variant = "desktop" }: HeaderNavAuthProps)
       )}
       <HeaderSignOutButton className={rowLink} />
       <Link href="/workshops" className="btn-primary !rounded-lg !px-5 !py-2.5 text-sm">
-        Book now
+        Explore
       </Link>
     </div>
   );

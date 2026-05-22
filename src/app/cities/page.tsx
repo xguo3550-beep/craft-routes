@@ -3,7 +3,7 @@ import { CITIES } from "@/lib/cities";
 
 export const metadata = {
   title: "Cities · Craft Routes",
-  description: "Workshops across Dali, Yunnan, Sichuan, and more regions in China.",
+  description: "Local experiences across Dali, Yunnan, Sichuan, and more regions in China.",
 };
 
 export default function CitiesPage() {
@@ -19,7 +19,7 @@ export default function CitiesPage() {
       </p>
 
       <h2 className="mt-10 text-sm font-semibold uppercase tracking-wider text-brand-600">
-        Book now
+        Open now
       </h2>
       <div className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {live.map((city) => (

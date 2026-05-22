@@ -91,7 +91,10 @@ export default async function WorkshopDetailPage({ params }: PageProps) {
                   👤
                 </span>
                 <div>
-                  <h2 className="font-display text-lg font-bold text-ink">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-brand-600">
+                    Meet your host
+                  </p>
+                  <h2 className="mt-1 font-display text-lg font-bold text-ink">
                     {workshop.host_name}
                   </h2>
                   <p className="mt-1 text-sm text-muted">{extra.hostSubtitle}</p>
@@ -114,7 +117,7 @@ export default async function WorkshopDetailPage({ params }: PageProps) {
 
             <section>
               <h2 className="font-display text-xl font-bold text-ink">
-                About this workshop
+                About this experience
               </h2>
               <p className="mt-4 leading-relaxed text-muted">
                 {workshop.long_description}

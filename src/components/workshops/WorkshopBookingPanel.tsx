@@ -45,7 +45,10 @@ export function WorkshopBookingPanel({ workshop, sessions }: WorkshopBookingPane
 
   return (
     <div className="rounded-xl border border-line bg-cream/80 p-6">
-      <h2 className="font-display text-xl font-bold text-ink">Book this experience</h2>
+      <h2 className="font-display text-xl font-bold text-ink">Join this experience</h2>
+      <p className="mt-1 text-sm text-muted">
+        Spend an afternoon with {workshop.host_name}
+      </p>
       <p className="mt-2 text-2xl font-bold text-ink">
         {formatPrice(workshop.price_cents, workshop.currency)}
         <span className="text-base font-normal text-muted"> per person</span>
@@ -117,7 +120,7 @@ export function WorkshopBookingPanel({ workshop, sessions }: WorkshopBookingPane
       </div>
 
       <Link href={bookHref} className="btn-primary mt-6 w-full text-center">
-        Reserve your spot
+        Join this experience
       </Link>
       <p className="mt-3 text-center text-xs text-muted">
         You won&apos;t be charged yet · Free cancellation 48h before

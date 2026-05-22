@@ -19,11 +19,11 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: {
-    default: "Craft Routes | Workshops in Dali & Sichuan",
+    default: "Craft Routes | Local experiences in Dali & Sichuan",
     template: "%s | Craft Routes",
   },
   description:
-    "Book authentic cultural workshops in Dali, Yunnan and Sichuan — tie-dye, pottery, hotpot cooking, tea ceremonies, and more. English-friendly hosts.",
+    "Experience a side of China through local people — afternoons with artists, cooks, and craftspeople in Dali and Sichuan. Curated, small groups, English-friendly hosts.",
 };
 
 export default function RootLayout({

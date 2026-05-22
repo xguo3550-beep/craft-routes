@@ -46,7 +46,7 @@ export function WorkshopCard({ workshop }: WorkshopCardProps) {
         </h3>
 
         <p className="mt-1 text-sm text-muted">
-          {workshop.host_name} · Local host
+          {workshop.host_name} · Host
         </p>
 
         <p className="mt-3 text-base font-bold text-ink">

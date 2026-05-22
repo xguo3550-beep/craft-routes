@@ -32,7 +32,8 @@ const team = [
 
 export const metadata = {
   title: "About · Craft Routes",
-  description: "Authentic cultural workshops in Dali and Sichuan for international visitors.",
+  description:
+    "Craft Routes connects travellers with local hosts in Dali and Sichuan — curated cultural experiences, not package tours.",
 };
 
 export default function AboutPage() {
@@ -47,9 +48,10 @@ export default function AboutPage() {
             The best way to understand a place is through its people
           </h1>
           <p className="mt-6 text-lg leading-relaxed text-muted">
-            Craft Routes connects foreign visitors with local artists, chefs, and
-            craftspeople for workshops in homes and studios across Dali, Yunnan and
-            Sichuan — not behind glass, but at the kitchen table and in the courtyard.
+            Craft Routes is not a tour agency. We connect curious travellers with
+            local artists, tea makers, village cooks, and craftspeople — for
+            afternoons in homes, studios, and courtyards across Dali and Sichuan.
+            The point is belonging for a moment, not checking off attractions.
           </p>
         </div>
       </section>

@@ -42,7 +42,7 @@ const BY_SLUG: Record<string, WorkshopDetailExtra> = {
     category: "Outdoors & crafts",
     minGuests: 2,
     reviewCount: 64,
-    hostSubtitle: "Ceramic artist & guide · Dali · 12 years on Erhai",
+    hostSubtitle: "Ceramic artist · Erhai lakeside · 12 years in Dali",
     hostLanguages: ["English", "Mandarin"],
     whatYouDo: [
       { icon: "🚲", text: "Guided e-bike ride along Erhai's western shore with photo stops" },
@@ -156,11 +156,11 @@ function genericExtra(title: string, region: string): WorkshopDetailExtra {
     category: "Experience",
     minGuests: 1,
     reviewCount: 12,
-    hostSubtitle: "Local host",
+    hostSubtitle: "Vetted local host",
     hostLanguages: ["English"],
     whatYouDo: [
-      { icon: "✨", text: `Enjoy ${title} with a vetted local host` },
-      { icon: "📍", text: isDali ? "Explore Dali at an easy, local pace" : "Discover Sichuan with insider guidance" },
+      { icon: "✨", text: `An afternoon with someone who lives here — not a tour script` },
+      { icon: "📍", text: isDali ? "Slow pace, real places they know from daily life" : "Sichuan through food, craft, and conversation" },
     ],
     goodToKnow: [
       { icon: "🌍", text: "Hosted in English" },
@@ -171,7 +171,7 @@ function genericExtra(title: string, region: string): WorkshopDetailExtra {
 }
 
 const DEFAULT_EXTRA: WorkshopDetailExtra = {
-  category: "Workshop",
+  category: "Experience",
   minGuests: 1,
   reviewCount: 40,
   hostSubtitle: "Local host",
@@ -188,7 +188,7 @@ export function getWorkshopDetailExtra(slug: string, title?: string, region?: st
     whatYouDo:
       extra.whatYouDo.length > 0
         ? extra.whatYouDo
-        : [{ icon: "✨", text: "Hands-on session with a vetted local host" }],
+        : [{ icon: "✨", text: "Spend time with a vetted local host — intimate, not a tour group" }],
     goodToKnow:
       extra.goodToKnow.length > 0
         ? extra.goodToKnow

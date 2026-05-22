@@ -64,9 +64,9 @@ export default async function WorkshopsPage({ searchParams }: PageProps) {
 
         {workshops.length === 0 && (
           <div className="mt-16 text-center">
-            <p className="text-muted">No workshops found.</p>
+            <p className="text-muted">No experiences found.</p>
             <Link href="/workshops" className="mt-4 inline-block text-sm font-semibold text-brand-600">
-              View all workshops
+              View all experiences
             </Link>
           </div>
         )}

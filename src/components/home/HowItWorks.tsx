@@ -1,19 +1,19 @@
 const steps = [
   {
-    title: "Browse & choose",
-    desc: "Filter by Dali or Sichuan and pick a date that fits your trip.",
+    title: "Find your host",
+    desc: "Curated experiences in Dali and Sichuan — each led by a real local, not a tour script.",
   },
   {
-    title: "Book your spot",
-    desc: "Secure checkout with instant confirmation by email.",
+    title: "Join a small group",
+    desc: "Pick a date, reserve your place, and get a warm confirmation by email.",
   },
   {
-    title: "Meet your host",
-    desc: "Small groups led by locals who speak English.",
+    title: "Spend the afternoon together",
+    desc: "Cook, make, walk, or sit for tea — at their table, studio, or village.",
   },
   {
-    title: "Take it home",
-    desc: "Leave with skills, stories, and often something you made.",
+    title: "Leave with a story",
+    desc: "Skills, memories, and often something you made with your own hands.",
   },
 ];
 

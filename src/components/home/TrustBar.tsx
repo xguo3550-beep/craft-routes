@@ -1,8 +1,8 @@
 export function TrustBar() {
   const items = [
-    "Curated for international travelers",
-    "All hosts personally vetted",
-    "Free cancellation 48h before",
+    "Curated — quality over quantity",
+    "Meet artists, cooks & craftspeople",
+    "Small groups · Free cancel 48h before",
   ];
 
   return (

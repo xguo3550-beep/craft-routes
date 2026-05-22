@@ -8,8 +8,8 @@ export function Footer() {
           <div>
             <p className="font-display text-xl font-bold text-ink">Craft Routes</p>
             <p className="mt-2 text-sm leading-relaxed text-muted">
-              Authentic cultural workshops in Dali and Sichuan, curated for
-              international travelers.
+              Local experiences in Dali and Sichuan — curated afternoons with
+              hosts, not tour buses or checklist sightseeing.
             </p>
           </div>
           <div>

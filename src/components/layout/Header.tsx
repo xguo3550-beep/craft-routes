@@ -98,7 +98,7 @@ export function Header({
               className="btn-primary mt-2 text-center"
               onClick={() => setOpen(false)}
             >
-              Book now
+              Explore
             </Link>
           </div>
         </nav>

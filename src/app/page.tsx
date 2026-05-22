@@ -50,7 +50,7 @@ export default async function HomePage() {
             Two regions, countless stories
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-muted">
-            {all.length} workshops across Dali&apos;s lakeside crafts and
+            {all.length} curated experiences — Dali&apos;s slow craft life and
             Sichuan&apos;s food, art, and tea culture.
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
