@@ -8,33 +8,40 @@ export default async function HomePage() {
 
   return (
     <>
-      <section className="relative overflow-hidden bg-gradient-to-br from-brand-800 via-brand-700 to-earth-800 text-white">
-        <div className="absolute inset-0 opacity-20">
-          <Image
-            src="https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=1920&q=80"
-            alt=""
-            fill
-            className="object-cover"
-            priority
-          />
-        </div>
+      <section className="relative min-h-[32rem] overflow-hidden text-white sm:min-h-[36rem]">
+        <Image
+          src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80"
+          alt="Mountains and lake in Yunnan, China"
+          fill
+          className="object-cover"
+          priority
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-black/10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent" />
         <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8 lg:py-40">
           <p className="text-sm font-semibold uppercase tracking-widest text-brand-200">
             Dali & Sichuan · China
           </p>
-          <h1 className="mt-4 max-w-3xl font-display text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">
+          <h1 className="mt-4 max-w-3xl font-display text-4xl font-bold leading-tight drop-shadow-sm sm:text-5xl lg:text-6xl">
             Authentic workshops for curious travelers
           </h1>
-          <p className="mt-6 max-w-xl text-lg text-brand-100">
+          <p className="mt-6 max-w-xl text-lg text-white/90 drop-shadow-sm">
             Book hands-on cultural experiences — tie-dye, pottery, Sichuan
             cooking, tea ceremonies, and mountain hikes — with English-speaking
             local hosts.
           </p>
           <div className="mt-10 flex flex-wrap gap-4">
-            <Link href="/workshops" className="btn-primary !bg-white !text-brand-800 hover:!bg-brand-50">
+            <Link
+              href="/workshops"
+              className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-800 shadow-lg transition hover:bg-brand-50"
+            >
               Browse workshops
             </Link>
-            <Link href="/workshops?region=dali" className="btn-secondary !border-white/30 !text-white hover:!bg-white/10">
+            <Link
+              href="/workshops?region=dali"
+              className="inline-flex items-center justify-center rounded-full border-2 border-white bg-white/20 px-6 py-3 text-sm font-semibold text-white shadow-lg backdrop-blur-sm transition hover:bg-white/30"
+            >
               Explore Dali
             </Link>
           </div>
