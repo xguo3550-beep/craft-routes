@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { SITE_NAME } from "@/lib/brand";
 import { type ReactNode, useState } from "react";
 
 const navLinks = [
@@ -29,7 +30,7 @@ export function Header({
     <header className="sticky top-0 z-50 border-b border-line bg-white/95 backdrop-blur-sm">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <Link href="/" className="font-display text-2xl font-bold tracking-tight text-ink">
-          Craft Routes
+          {SITE_NAME}
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">

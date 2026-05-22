@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CONTACT_EMAIL, SITE_NAME, siteTitle } from "@/lib/brand";
 
 const values = [
   {
@@ -31,9 +32,9 @@ const team = [
 ];
 
 export const metadata = {
-  title: "About · Craft Routes",
+  title: siteTitle("About"),
   description:
-    "Craft Routes connects travellers with local hosts in Dali and Sichuan — curated cultural experiences, not package tours.",
+    `${SITE_NAME} connects travellers with local hosts in Dali and Sichuan — curated cultural experiences, not package tours.`,
 };
 
 export default function AboutPage() {
@@ -48,7 +49,7 @@ export default function AboutPage() {
             The best way to understand a place is through its people
           </h1>
           <p className="mt-6 text-lg leading-relaxed text-muted">
-            Craft Routes is not a tour agency. We connect curious travellers with
+            {SITE_NAME} is not a tour agency. We connect curious travellers with
             local artists, tea makers, village cooks, and craftspeople — for
             afternoons in homes, studios, and courtyards across Dali and Sichuan.
             The point is belonging for a moment, not checking off attractions.
@@ -61,7 +62,7 @@ export default function AboutPage() {
           <h2 className="font-display text-2xl font-bold text-ink">Why we built this</h2>
           <p className="mt-4 leading-relaxed text-muted">
             China is reopening to curious travellers who want more than a checklist of
-            sights. We started Craft Routes because the moments that stay with you are
+            sights. We started {SITE_NAME} because the moments that stay with you are
             often small: folding bao with a grandmother, dipping indigo cloth, or
             learning gongfu tea from someone who studied for years.
           </p>
@@ -124,7 +125,7 @@ export default function AboutPage() {
             </Link>
           </div>
           <a
-            href="mailto:hello@craftroutes.com"
+            href={`mailto:${CONTACT_EMAIL}`}
             className="mt-4 inline-block text-sm font-medium text-brand-600 hover:underline"
           >
             Get in touch

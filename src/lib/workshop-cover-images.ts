@@ -3,10 +3,11 @@
 export const LOCAL_WORKSHOP_COVERS = [
   "bai-ethnic-tie-dye",
   "erhai-cycling-pottery",
+  "tea-ceremony-mount-emei",
+  "chengdu-tea-house-afternoon",
+  "nuodeng-salt-well-hike",
   "sichuan-hotpot-cooking",
   "shuimo-painting-pandas",
-  "tea-ceremony-mount-emei",
-  "nuodeng-salt-well-hike",
   "cafe-cats",
   "dali-experience",
   "sichuan-experience",
@@ -39,6 +40,7 @@ export function pickCoverKey(
   if (/tie.?dye|indigo|textile|bai/.test(hay)) return "bai-ethnic-tie-dye";
   if (/pottery|clay|ceramic/.test(hay)) return "erhai-cycling-pottery";
   if (/cycl|bike|erhai|lake/.test(hay)) return "erhai-cycling-pottery";
+  if (/tea.?house|chengdu|mahjong|teahouse/.test(hay)) return "tea-ceremony-mount-emei";
   if (/hotpot|hot.?pot|cook|sichuan food|chili/.test(hay)) return "sichuan-hotpot-cooking";
   if (/panda|ink|paint|shuimo|calligraphy/.test(hay)) return "shuimo-painting-pandas";
   if (/tea|ceremony|matcha/.test(hay)) return "tea-ceremony-mount-emei";

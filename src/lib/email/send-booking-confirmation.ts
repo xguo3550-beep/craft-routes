@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { CONTACT_EMAIL, SITE_NAME } from "@/lib/brand";
 import type { BookingEmailDetails } from "@/lib/email/types";
 
 function buildHtml(details: BookingEmailDetails): string {
@@ -10,7 +11,7 @@ function buildHtml(details: BookingEmailDetails): string {
 <!DOCTYPE html>
 <html>
 <body style="font-family: system-ui, sans-serif; line-height: 1.6; color: #4a3728; max-width: 560px;">
-  <h1 style="color: #166534;">Booking confirmed — Craft Routes</h1>
+  <h1 style="color: #166534;">Booking confirmed — ${SITE_NAME}</h1>
   <p>Hi ${details.guestName},</p>
   <p>Your spot is reserved for <strong>${details.workshopTitle}</strong>.</p>
   <table style="width: 100%; border-collapse: collapse; margin: 24px 0;">
@@ -25,14 +26,14 @@ function buildHtml(details: BookingEmailDetails): string {
   <h2 style="font-size: 16px; color: #166534;">What's included</h2>
   <ul>${includesList}</ul>
   <p style="margin-top: 24px;">We'll meet you at the location above. Bring comfortable clothes and your passport copy if required for registration.</p>
-  <p>Questions? Reply to this email or contact <a href="mailto:hello@craftroutes.com">hello@craftroutes.com</a>.</p>
-  <p style="color: #8b6544; font-size: 14px;">— Craft Routes · Dali & Sichuan workshops</p>
+  <p>Questions? Reply to this email or contact <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a>.</p>
+  <p style="color: #8b6544; font-size: 14px;">— ${SITE_NAME} · Dali & Sichuan experiences</p>
 </body>
 </html>`;
 }
 
 function buildText(details: BookingEmailDetails): string {
-  return `Booking confirmed — Craft Routes
+  return `Booking confirmed — ${SITE_NAME}
 
 Hi ${details.guestName},
 
@@ -49,16 +50,16 @@ Total: ${details.totalFormatted}
 What's included:
 ${details.includes.map((i) => `• ${i}`).join("\n")}
 
-Questions? hello@craftroutes.com
+Questions? ${CONTACT_EMAIL}
 
-— Craft Routes`;
+— ${SITE_NAME}`;
 }
 
 export async function sendBookingConfirmationEmail(
   details: BookingEmailDetails
 ): Promise<{ sent: boolean; error?: string }> {
   const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.EMAIL_FROM ?? "Craft Routes <onboarding@resend.dev>";
+  const from = process.env.EMAIL_FROM ?? `${SITE_NAME} <onboarding@resend.dev>`;
 
   if (!apiKey) {
     console.warn("RESEND_API_KEY not set — skipping confirmation email");

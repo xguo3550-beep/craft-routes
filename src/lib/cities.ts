@@ -23,6 +23,7 @@ export const WORKSHOP_CITY: Record<string, CitySlug> = {
   "bai-ethnic-tie-dye": "xizhou",
   "erhai-cycling-pottery": "dali",
   "nuodeng-salt-well-hike": "nuodeng",
+  "chengdu-tea-house-afternoon": "chengdu",
   "sichuan-hotpot-cooking": "chengdu",
   "shuimo-painting-pandas": "chengdu",
   "tea-ceremony-mount-emei": "emeishan",

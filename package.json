@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "images:generate": "bash scripts/generate-workshop-covers.sh",
+    "images:download": "bash scripts/download-workshop-images.sh"
   },
   "dependencies": {
     "@stripe/stripe-js": "^4.0.0",

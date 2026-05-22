@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CONTACT_EMAIL, SITE_NAME } from "@/lib/brand";
 
 export function Footer() {
   return (
@@ -6,7 +7,7 @@ export function Footer() {
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-8 md:grid-cols-3">
           <div>
-            <p className="font-display text-xl font-bold text-ink">Craft Routes</p>
+            <p className="font-display text-xl font-bold text-ink">{SITE_NAME}</p>
             <p className="mt-2 text-sm leading-relaxed text-muted">
               Local experiences in Dali and Sichuan — curated afternoons with
               hosts, not tour buses or checklist sightseeing.
@@ -45,8 +46,8 @@ export function Footer() {
           <div>
             <p className="text-sm font-semibold text-ink">Contact</p>
             <p className="mt-3 text-sm text-muted">
-              <a href="mailto:hello@craftroutes.com" className="hover:text-brand-600">
-                hello@craftroutes.com
+              <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-brand-600">
+                {CONTACT_EMAIL}
               </a>
               <br />
               We reply within 24 hours in English.
@@ -54,7 +55,7 @@ export function Footer() {
           </div>
         </div>
         <p className="mt-10 border-t border-line pt-6 text-center text-xs text-muted">
-          © {new Date().getFullYear()} Craft Routes. All rights reserved.
+          © {new Date().getFullYear()} {SITE_NAME}. All rights reserved.
         </p>
       </div>
     </footer>

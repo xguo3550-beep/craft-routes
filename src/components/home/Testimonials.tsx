@@ -1,23 +1,23 @@
 const reviews = [
   {
     quote:
-      "The tie-dye workshop in Xizhou was the highlight of our Yunnan trip. Yang Mei explained every step in perfect English.",
+      "The indigo afternoon in Xizhou felt like a design residency, not tourism. Yang Mei spoke about cloth the way we speak about colour in London.",
     name: "Sophie T.",
-    meta: "London · Bai tie-dye, Dali",
+    meta: "Textile designer · London · Bai indigo",
     rating: 5,
   },
   {
     quote:
-      "Hotpot class in Chengdu felt like cooking with family. We still use Chef Zhang's sauce recipe at home.",
-    name: "Marcus L.",
-    meta: "Berlin · Sichuan hotpot",
+      "I came for tea culture and left with a story about the Tea Horse Road I still tell at dinner parties. Slow, literary, unhurried.",
+    name: "James H.",
+    meta: "Writer · Edinburgh · Mountain tea",
     rating: 5,
   },
   {
     quote:
-      "Small group, beautiful lake ride, and I shipped my pottery home. Craft Routes made booking effortless.",
+      "Chengdu teahouse first, then cooking in Zhang's kitchen — community feeling, not a spice challenge. Exactly the China I wanted to see.",
     name: "Emma R.",
-    meta: "Sydney · Erhai cycling & pottery",
+    meta: "Photographer · Bristol · Tea house afternoon",
     rating: 5,
   },
 ];
@@ -26,8 +26,11 @@ export function Testimonials() {
   return (
     <section className="border-t border-line bg-white px-4 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        <h2 className="text-center font-display text-2xl font-bold text-ink sm:text-3xl">
-          What guests say
+        <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-brand-600">
+          Notes from guests
+        </p>
+        <h2 className="mt-2 text-center font-display text-2xl font-bold text-ink sm:text-3xl">
+          For people who travel with curiosity, not a checklist
         </h2>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {reviews.map((r) => (

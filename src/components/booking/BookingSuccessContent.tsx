@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { CONTACT_EMAIL } from "@/lib/brand";
 import { getWorkshopDetailExtra } from "@/lib/workshop-detail-content";
 
 interface BookingSuccessContentProps {
@@ -136,8 +137,8 @@ export function BookingSuccessContent({
             Your booking is confirmed
             {bookingId ? ` (ref ${bookingId})` : ""}. We couldn&apos;t send email
             — contact{" "}
-            <a href="mailto:hello@craftroutes.com" className="font-medium underline">
-              hello@craftroutes.com
+            <a href={`mailto:${CONTACT_EMAIL}`} className="font-medium underline">
+              {CONTACT_EMAIL}
             </a>
             {emailError ? ` (${emailError})` : ""}.
           </p>

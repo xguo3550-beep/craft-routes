@@ -1,8 +1,9 @@
 import Link from "next/link";
+import { siteTitle } from "@/lib/brand";
 import { CITIES } from "@/lib/cities";
 
 export const metadata = {
-  title: "Cities · Craft Routes",
+  title: siteTitle("Cities"),
   description: "Local experiences across Dali, Yunnan, Sichuan, and more regions in China.",
 };
 

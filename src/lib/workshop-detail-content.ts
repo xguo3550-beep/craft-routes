@@ -15,8 +15,28 @@ export interface WorkshopDetailExtra {
 }
 
 const BY_SLUG: Record<string, WorkshopDetailExtra> = {
+  "chengdu-tea-house-afternoon": {
+    category: "Tea & kitchen life",
+    minGuests: 2,
+    reviewCount: 41,
+    hostSubtitle: "Chengdu cook · Teahouse regular · Home recipes",
+    hostLanguages: ["English", "Mandarin"],
+    whatYouDo: [
+      { icon: "🍵", text: "Sit in a neighbourhood teahouse — bamboo chairs, endless pours, unhurried chat" },
+      { icon: "🥬", text: "Walk to a family kitchen and cook a seasonal lunch from the morning market" },
+      { icon: "📖", text: "Leave with English recipes written for your own stove at home" },
+    ],
+    goodToKnow: [
+      { icon: "🌍", text: "Hosted in English — small group, not a tour bus" },
+      { icon: "🌶️", text: "Heat is adjustable; vegetables & fermentation forward" },
+      { icon: "✓", text: "Free cancellation up to 48 hours before" },
+    ],
+    whatToBring: [
+      { icon: "👟", text: "Comfortable shoes for the short neighbourhood walk" },
+    ],
+  },
   "bai-ethnic-tie-dye": {
-    category: "Crafts & textiles",
+    category: "Indigo & textiles",
     minGuests: 1,
     reviewCount: 89,
     hostSubtitle: "Bai artisan · Xizhou · Third-generation tie-dye",

@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import Link from "next/link";
+import { SITE_NAME } from "@/lib/brand";
 import { WorkshopCard } from "@/components/workshops/WorkshopCard";
 import { RegionFilter } from "@/components/workshops/RegionFilter";
 import { getWorkshops } from "@/lib/data/workshops";
@@ -40,7 +41,7 @@ export default async function WorkshopsPage({ searchParams }: PageProps) {
       <div className="border-b border-line bg-white px-4 py-10 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-600">
-            Craft Routes
+            {SITE_NAME}
           </p>
           <h1 className="mt-2 font-display text-3xl font-bold text-ink sm:text-4xl">
             {title}

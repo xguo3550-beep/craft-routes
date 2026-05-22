@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Lora } from "next/font/google";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { Footer } from "@/components/layout/Footer";
+import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/brand";
 import "./globals.css";
 
 const inter = Inter({
@@ -19,11 +20,10 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: {
-    default: "Craft Routes | Local experiences in Dali & Sichuan",
-    template: "%s | Craft Routes",
+    default: `${SITE_NAME} | Local experiences in Dali & Sichuan`,
+    template: `%s · ${SITE_NAME}`,
   },
-  description:
-    "Experience a side of China through local people — afternoons with artists, cooks, and craftspeople in Dali and Sichuan. Curated, small groups, English-friendly hosts.",
+  description: SITE_DESCRIPTION,
 };
 
 export default function RootLayout({

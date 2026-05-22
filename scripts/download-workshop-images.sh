@@ -1,32 +1,75 @@
 #!/usr/bin/env bash
-# Download real photo covers into public/images/workshops (run on your Mac).
-# Uses Pexels (free license) — do NOT scrape Airbnb (copyright + hotlink blocks).
-#
-#   bash scripts/download-workshop-images.sh
+# Real photos for workshop covers. Run on your Mac (needs network + ImageMagick):
+#   npm run images:download
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OUT="$ROOT/public/images/workshops"
 mkdir -p "$OUT"
-P="auto=compress&cs=tinysrgb&w=1200&h=900&fit=crop"
+UA="ElsewhereChina/1.0 (contact@example.com)"
+W="1280"
 
-download() {
+try_download() {
   local slug="$1" url="$2"
   echo "→ $slug"
-  curl -fsSL -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)" \
-    -H "Referer: https://www.pexels.com/" \
-    -L "$url" -o "$OUT/${slug}.jpg"
+  if curl -fsSL -A "$UA" -L "$url" -o "$OUT/${slug}.jpg"; then
+    if command -v convert >/dev/null 2>&1; then
+      convert "$OUT/${slug}.jpg" -resize 1200x900^ -gravity center -extent 1200x900 -quality 88 "$OUT/${slug}.jpg"
+    fi
+    echo "  ✓ saved"
+    return 0
+  fi
+  echo "  ✗ failed"
+  return 1
 }
 
-# Thematic, travel / experience style (Pexels)
-download "bai-ethnic-tie-dye" "https://images.pexels.com/photos/62902/pexels-photo-62902.jpeg?${P}"
-download "erhai-cycling-pottery" "https://images.pexels.com/photos/1365425/pexels-photo-1365425.jpeg?${P}"
-download "sichuan-hotpot-cooking" "https://images.pexels.com/photos/725991/pexels-photo-725991.jpeg?${P}"
-download "shuimo-painting-pandas" "https://images.pexels.com/photos/33109/pexels-photo-33109.jpeg?${P}"
-download "tea-ceremony-mount-emei" "https://images.pexels.com/photos/230477/pexels-photo-230477.jpeg?${P}"
-download "nuodeng-salt-well-hike" "https://images.pexels.com/photos/1366919/pexels-photo-1366919.jpeg?${P}"
-download "default-experience" "https://images.pexels.com/photos/3278215/pexels-photo-3278215.jpeg?${P}"
-download "dali-experience" "https://images.pexels.com/photos/2387873/pexels-photo-2387873.jpeg?${P}"
-download "sichuan-experience" "https://images.pexels.com/photos/699544/pexels-photo-699544.jpeg?${P}"
-download "cafe-cats" "https://images.pexels.com/photos/2071874/pexels-photo-2071874.jpeg?${P}"
+# Wikimedia Commons — CC / public domain (Southwest China themes)
+try_download "bai-ethnic-tie-dye" \
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Tie-dyed_cloth.jpg/${W}px-Tie-dyed_cloth.jpg" \
+  || try_download "bai-ethnic-tie-dye" \
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/%E5%A4%A7%E7%90%86%E5%96%9C%E6%B4%B2%E6%89%8E%E6%9F%93%E6%9F%93%E7%BC%B8.jpg/${W}px-%E5%A4%A7%E7%90%86%E5%96%9C%E6%B4%B2%E6%89%8E%E6%9F%93%E6%9F%93%E7%BC%B8.jpg" \
+  || true
 
-echo "Done — restart dev server. Covers load from /public/images/workshops/"
+try_download "erhai-cycling-pottery" \
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Erhai_Lake_and_Cangshan_Mountain%2C_Dali%2C_Yunnan%2C_China.jpg/${W}px-Erhai_Lake_and_Cangshan_Mountain%2C_Dali%2C_Yunnan%2C_China.jpg" \
+  || true
+
+try_download "tea-ceremony-mount-emei" \
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Tea_picking_in_China.jpg/${W}px-Tea_picking_in_China.jpg" \
+  || try_download "tea-ceremony-mount-emei" \
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Chinese_tea_ceremony.jpg/${W}px-Chinese_tea_ceremony.jpg" \
+  || true
+
+try_download "chengdu-tea-house-afternoon" \
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Chinese_tea_ceremony.jpg/${W}px-Chinese_tea_ceremony.jpg" \
+  || true
+
+try_download "nuodeng-salt-well-hike" \
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Yunnan_countryside.jpg/${W}px-Yunnan_countryside.jpg" \
+  || true
+
+try_download "shuimo-painting-pandas" \
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Panda_chengdu.jpg/${W}px-Panda_chengdu.jpg" \
+  || true
+
+# Pexels fallbacks (free license)
+PEX="auto=compress&cs=tinysrgb&w=1200&h=900&fit=crop"
+pexels() {
+  local slug="$1" id="$2"
+  curl -fsSL -A "$UA" -H "Referer: https://www.pexels.com/" \
+    -L "https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?${PEX}" \
+    -o "$OUT/${slug}.jpg" 2>/dev/null && echo "  ✓ pexels $slug" || true
+}
+
+pexels "erhai-cycling-pottery" "1365425"
+pexels "sichuan-hotpot-cooking" "725991"
+pexels "dali-experience" "2387873"
+pexels "sichuan-experience" "699544"
+pexels "cafe-cats" "2071874"
+pexels "default-experience" "3278215"
+
+if [[ -f "$OUT/tea-ceremony-mount-emei.jpg" && ! -s "$OUT/chengdu-tea-house-afternoon.jpg" ]]; then
+  cp "$OUT/tea-ceremony-mount-emei.jpg" "$OUT/chengdu-tea-house-afternoon.jpg"
+fi
+
+echo ""
+echo "Finished. Missing files? Run: npm run images:generate"

@@ -1,6 +1,7 @@
 const SLUG_EMOJI: Record<string, string> = {
   "bai-ethnic-tie-dye": "🧵",
   "erhai-cycling-pottery": "🚲",
+  "chengdu-tea-house-afternoon": "🍵",
   "sichuan-hotpot-cooking": "🍲",
   "shuimo-painting-pandas": "🐼",
   "tea-ceremony-mount-emei": "🍵",

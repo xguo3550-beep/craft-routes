@@ -1,4 +1,4 @@
-# Craft Routes — Workshop Marketplace
+# Elsewhere China — Curated local experiences
 
 A responsive marketplace for international travelers to book cultural workshops in **Dali, Yunnan** and **Sichuan**, China.
 
@@ -36,7 +36,7 @@ Open [http://localhost:3000](http://localhost:3000). Without env vars, the app u
 | `STRIPE_WEBHOOK_SECRET` | Stripe webhook signing secret |
 | `NEXT_PUBLIC_APP_URL` | App URL (e.g. `http://localhost:3000`) |
 | `RESEND_API_KEY` | [Resend](https://resend.com) API key for confirmation emails |
-| `EMAIL_FROM` | Sender address (e.g. `Craft Routes <bookings@yourdomain.com>`) |
+| `EMAIL_FROM` | Sender address (e.g. `Elsewhere China <bookings@yourdomain.com>`) |
 
 ## Confirmation emails (Resend)
 
@@ -44,7 +44,7 @@ Open [http://localhost:3000](http://localhost:3000). Without env vars, the app u
 2. Create an API key → add to `.env.local` as `RESEND_API_KEY`
 3. For **local testing**, use:
    ```
-   EMAIL_FROM=Craft Routes <onboarding@resend.dev>
+   EMAIL_FROM=Elsewhere China <onboarding@resend.dev>
    ```
    Resend’s test sender only delivers to **the email on your Resend account**.
 4. For **production**, verify your domain in Resend and set `EMAIL_FROM` to that domain.

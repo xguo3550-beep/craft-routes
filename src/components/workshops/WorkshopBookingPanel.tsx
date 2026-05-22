@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import type { Workshop, WorkshopSession } from "@/types";
 import { formatPrice, formatShortDate } from "@/lib/format";
+import { CONTACT_EMAIL } from "@/lib/brand";
 import { getWorkshopDetailExtra } from "@/lib/workshop-detail-content";
 
 interface WorkshopBookingPanelProps {
@@ -36,8 +37,8 @@ export function WorkshopBookingPanel({ workshop, sessions }: WorkshopBookingPane
     return (
       <div className="rounded-xl border border-line bg-cream p-6 text-sm text-muted">
         No upcoming dates. Email{" "}
-        <a href="mailto:hello@craftroutes.com" className="font-medium text-brand-600">
-          hello@craftroutes.com
+        <a href={`mailto:${CONTACT_EMAIL}`} className="font-medium text-brand-600">
+          {CONTACT_EMAIL}
         </a>
       </div>
     );

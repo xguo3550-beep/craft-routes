@@ -3,6 +3,7 @@ import type { Workshop } from "@/types";
 import { WorkshopCover } from "@/components/workshops/WorkshopCover";
 import { cityLabel, getWorkshopCity } from "@/lib/cities";
 import { formatPrice } from "@/lib/format";
+import { experienceEditorial } from "@/lib/editorial";
 import { workshopBadge, workshopRating } from "@/lib/workshop-meta";
 
 interface WorkshopCardProps {
@@ -11,6 +12,7 @@ interface WorkshopCardProps {
 
 export function WorkshopCard({ workshop }: WorkshopCardProps) {
   const badge = workshopBadge(workshop.slug, workshop.featured);
+  const editorial = experienceEditorial(workshop.slug);
   const rating = workshopRating(workshop.id);
   const city = getWorkshopCity(workshop.slug, workshop.region);
   return (
@@ -27,11 +29,13 @@ export function WorkshopCard({ workshop }: WorkshopCardProps) {
           className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/50 via-ink/5 to-transparent"
           aria-hidden
         />
-        {badge && (
+        {(editorial?.mood || badge) && (
           <span
-            className={`absolute left-3 top-3 rounded-md px-2 py-0.5 text-xs font-medium shadow-sm ${badge.className}`}
+            className={`absolute left-3 top-3 rounded-md px-2 py-0.5 text-xs font-medium shadow-sm ${
+              badge?.className ?? "bg-white/90 text-ink"
+            }`}
           >
-            {badge.label}
+            {editorial?.mood ?? badge?.label}
           </span>
         )}
       </div>
@@ -45,9 +49,14 @@ export function WorkshopCard({ workshop }: WorkshopCardProps) {
           {workshop.title}
         </h3>
 
-        <p className="mt-1 text-sm text-muted">
-          {workshop.host_name} · Host
-        </p>
+        {editorial?.tagline ? (
+          <p className="mt-2 text-sm leading-snug text-muted">{editorial.tagline}</p>
+        ) : (
+          <p className="mt-1 text-sm text-muted">
+            {workshop.host_name} · Host
+          </p>
+        )}
+        <p className="mt-1 text-sm text-muted/80">{workshop.host_name}</p>
 
         <p className="mt-3 text-base font-bold text-ink">
           {formatPrice(workshop.price_cents, workshop.currency)}

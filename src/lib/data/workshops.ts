@@ -73,8 +73,17 @@ export async function getWorkshops(
 }
 
 export async function getFeaturedWorkshops(): Promise<Workshop[]> {
+  const { CURATED_SLUGS, EXPERIENCE_EDITORIAL } = await import("@/lib/editorial");
   const workshops = await getWorkshops();
-  return workshops.filter((w) => w.featured).slice(0, 3);
+  const bySlug = new Map(workshops.map((w) => [w.slug, w]));
+
+  return CURATED_SLUGS.map((slug) => bySlug.get(slug))
+    .filter((w): w is Workshop => Boolean(w))
+    .sort(
+      (a, b) =>
+        (EXPERIENCE_EDITORIAL[a.slug]?.order ?? 99) -
+        (EXPERIENCE_EDITORIAL[b.slug]?.order ?? 99)
+    );
 }
 
 async function sessionsForWorkshop(

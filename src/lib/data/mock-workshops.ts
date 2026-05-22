@@ -20,11 +20,11 @@ export const MOCK_WORKSHOPS: Workshop[] = [
   {
     id: "1",
     slug: "bai-ethnic-tie-dye",
-    title: "Bai Ethnic Tie-Dye Workshop",
+    title: "Bai Indigo: An Afternoon in Xizhou",
     description:
-      "Learn centuries-old indigo tie-dye techniques from Bai artisans in a courtyard studio near Erhai Lake.",
+      "Natural indigo, hand binding, and Bai textile stories in a courtyard studio — made for design, fashion, and craft people.",
     long_description:
-      "Spend a half-day with master artisan Yang Mei in her family courtyard workshop. You will learn the full process: folding, binding, dipping in natural indigo vats, and unwrapping your creation. Every participant leaves with a hand-dyed scarf or tote bag.",
+      "Yang Mei is a third-generation Bai artisan in Xizhou, minutes from Erhai Lake. This is not a demo for tour groups — it is a slow afternoon in her family courtyard: folding cloth, binding thread, dipping in plant indigo vats, and unwrapping something you dyed yourself. She speaks about Bai patterns the way a designer speaks about material — with patience, humour, and tea between each step. You leave with a scarf or tote, and a clearer sense of why British craft culture and Yunnan indigo rhyme with each other.",
     region: "dali",
     location: "Xizhou Ancient Town, Dali",
     duration_hours: 4,
@@ -34,10 +34,10 @@ export const MOCK_WORKSHOPS: Workshop[] = [
     image_url: workshopCoverPath("bai-ethnic-tie-dye"),
     gallery_urls: [],
     highlights: [
-      "Natural indigo dyes",
-      "Take home your creation",
-      "English-speaking guide",
-      "Tea & local snacks",
+      "Plant indigo & hand binding",
+      "Courtyard studio, not a tour stop",
+      "For textile & design curious travellers",
+      "Tea between each dye dip",
     ],
     includes: [
       "All materials",
@@ -47,7 +47,7 @@ export const MOCK_WORKSHOPS: Workshop[] = [
     ],
     host_name: "Yang Mei",
     host_bio:
-      "Third-generation Bai tie-dye artisan from Xizhou. Featured in National Geographic Traveler.",
+      "Third-generation Bai tie-dye artisan. Yang works with natural indigo and teaches the way she learned — at home, with tea, without a script.",
     language: "English",
     featured: true,
     created_at: now.toISOString(),
@@ -55,11 +55,11 @@ export const MOCK_WORKSHOPS: Workshop[] = [
   {
     id: "2",
     slug: "erhai-cycling-pottery",
-    title: "Erhai Lakeside Cycling & Pottery",
+    title: "Hand-Building Clay by Erhai Lake",
     description:
-      "Morning bike ride along Erhai Lake followed by hand-building pottery in a lakeside studio.",
+      "Ceramics in a lakeside studio after a gentle ride through Bai villages — mountain lake creative life, not checklist China.",
     long_description:
-      "Start with a guided e-bike ride along the western shore of Erhai Lake, stopping at Bai villages and photo points. Return to our lakeside studio for a relaxed pottery session.",
+      "Li Wei trained in Jingdezhen and chose Dali for the light on Erhai. You may ride slowly along the western shore (e-bikes provided), then settle into her studio for hand-building bowls or quiet decorative pieces. The day is unhurried: water, clay, conversation. Shipping worldwide is arranged if you want your piece fired and sent home. Ideal for ceramic artists, photographers, and anyone chasing a softer version of China.",
     region: "dali",
     location: "Caohai Wetland, Dali",
     duration_hours: 6,
@@ -82,41 +82,42 @@ export const MOCK_WORKSHOPS: Workshop[] = [
     ],
     host_name: "Li Wei",
     host_bio:
-      "Ceramic artist and cycling guide. Studied at Jingdezhen and lived in Dali for 12 years.",
+      "Ceramic artist based on Erhai. Li studied in Jingdezhen and has lived in Dali for twelve years — clay, lake light, and village pace.",
     language: "English",
     featured: true,
     created_at: now.toISOString(),
   },
   {
     id: "3",
-    slug: "sichuan-hotpot-cooking",
-    title: "Authentic Sichuan Hotpot Cooking Class",
+    slug: "chengdu-tea-house-afternoon",
+    title: "Chengdu Tea House & Home Kitchen",
     description:
-      "Master the art of Sichuan hotpot — from broth to dipping sauces — in a Chengdu home kitchen.",
+      "Old tea houses, mahjong murmur, and family-style cooking — community life, not a spice challenge.",
     long_description:
-      "Join Chef Zhang in her Chengdu apartment for an immersive cooking experience. Learn to prepare two broths (spicy mala and mild mushroom), make signature dipping sauces, and understand Sichuan flavor layering.",
+      "Chef Zhang Lin grew up between Chengdu tea houses and her grandmother's kitchen. You begin in a neighbourhood teahouse — bamboo chairs, endless pours, the soft clatter of tiles — then walk to her apartment to cook a seasonal lunch together: market vegetables, fermented flavours, recipes written for your kitchen at home. This is the Sichuan that Condé Nast travellers actually write about: relaxed, communal, slightly raw. Not pandas, not hotpot theatre.",
     region: "sichuan",
-    location: "Jinjiang District, Chengdu",
-    duration_hours: 3,
-    max_participants: 12,
+    location: "Wuhou District, Chengdu",
+    duration_hours: 4,
+    max_participants: 8,
     price_cents: 7500,
     currency: "usd",
-    image_url: workshopCoverPath("sichuan-hotpot-cooking"),
+    image_url: workshopCoverPath("tea-ceremony-mount-emei"),
     gallery_urls: [],
     highlights: [
-      "Home kitchen experience",
-      "Recipe cards to take home",
-      "Vegetarian options",
+      "Classic Chengdu teahouse visit",
+      "Family kitchen, small group",
+      "Seasonal market ingredients",
+      "Recipe cards in English",
     ],
     includes: [
-      "All ingredients",
-      "Recipes (EN/CN)",
-      "Full hotpot meal",
-      "Local beer or tea",
+      "Teahouse tea & snacks",
+      "Cooking session & lunch",
+      "Recipes (EN)",
+      "Neighbourhood walk",
     ],
     host_name: "Chef Zhang Lin",
     host_bio:
-      "Former restaurant chef with 20 years of Sichuan cuisine expertise.",
+      "Chengdu-born cook and teahouse regular. Zhang writes about Sichuan home food the way a host writes a letter — personal, seasonal, never performative.",
     language: "English",
     featured: true,
     created_at: now.toISOString(),
@@ -158,11 +159,11 @@ export const MOCK_WORKSHOPS: Workshop[] = [
   {
     id: "5",
     slug: "tea-ceremony-mount-emei",
-    title: "Mount Emei Tea Ceremony & Forest Walk",
+    title: "Tea Horse Road: Mountain Tea & Forest Air",
     description:
-      "Experience a traditional Sichuan tea ceremony amid ancient forests at the foot of Mount Emei.",
+      "Fire-roasted leaves, gongfu tea, and stories from the old trade routes — tea lifestyle for curious British tea people.",
     long_description:
-      "Travel to a tea plantation at the base of Mount Emei for a guided forest walk and full gongfu tea ceremony with tastings of three rare local teas.",
+      "Chen Yu is from the tea slopes below Mount Emei. You walk through forest that still remembers the Tea Horse Road, then sit for a slow ceremony: fire-roasted green, aged pu'er, and a Bai-style three-course tea if the season allows. Chen talks about leaves the way a sommelier talks about memory — origin, roast, water, pause. This is not a tasting flight; it is an afternoon of tea as daily life, which lands especially well with travellers who already have a tea imagination.",
     region: "sichuan",
     location: "Emeishan City, Sichuan",
     duration_hours: 5,
@@ -183,19 +184,20 @@ export const MOCK_WORKSHOPS: Workshop[] = [
       "Round-trip transport",
     ],
     host_name: "Chen Yu",
-    host_bio: "Certified tea sommelier and Mount Emei native.",
+    host_bio:
+      "Tea maker and Mount Emei native. Chen roasts in small batches and hosts travellers who want tea as culture, not performance.",
     language: "English",
-    featured: false,
+    featured: true,
     created_at: now.toISOString(),
   },
   {
     id: "6",
     slug: "nuodeng-salt-well-hike",
-    title: "Nuodeng Ancient Salt Village Hike",
+    title: "Nuodeng: Salt, Heritage & Slow Walking",
     description:
-      "Trek through a 1300-year-old salt-trading village in the mountains between Dali and Lijiang.",
+      "A 1300-year-old village on the Tea Horse Road — living salt wells, Bai lunch, documentary calm.",
     long_description:
-      "Discover Nuodeng, one of Yunnan's best-preserved ancient villages, with thousand-year-old salt wells still in use and a traditional Bai lunch.",
+      "Zhao Bin was born in Nuodeng and guides only small groups. You walk cobbled lanes above working salt wells, hear how caravans once crossed these ridges, and eat a Bai family lunch with seasonal mushrooms and fermented sides. The village is not a theme park — it is slightly raw, poetic, imperfect in the way Kinfolk readers tend to love. Alternative China at human scale.",
     region: "dali",
     location: "Nuodeng Village, Yunlong County",
     duration_hours: 7,
@@ -211,9 +213,10 @@ export const MOCK_WORKSHOPS: Workshop[] = [
     ],
     includes: ["Guide fees", "Traditional lunch", "Transport from Dali"],
     host_name: "Zhao Bin",
-    host_bio: "Local historian and hiking guide born in Nuodeng.",
+    host_bio:
+      "Historian and guide born in Nuodeng. Zhao tells village stories like essays, not scripts.",
     language: "English",
-    featured: false,
+    featured: true,
     created_at: now.toISOString(),
   },
 ];

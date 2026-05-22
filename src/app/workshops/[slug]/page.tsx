@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { DetailListSection } from "@/components/workshops/DetailListSection";
 import { WorkshopBookingPanel } from "@/components/workshops/WorkshopBookingPanel";
 import { getWorkshopBySlug } from "@/lib/data/workshops";
+import { experienceEditorial } from "@/lib/editorial";
 import { getWorkshopDetailExtra } from "@/lib/workshop-detail-content";
 import { formatPrice, regionLabel } from "@/lib/format";
 import { cityDisplayLabel, getWorkshopCity } from "@/lib/cities";
@@ -29,6 +30,7 @@ export default async function WorkshopDetailPage({ params }: PageProps) {
 
   if (!workshop) notFound();
 
+  const editorial = experienceEditorial(slug);
   const extra = getWorkshopDetailExtra(slug, workshop.title, workshop.region);
   const rating = workshopRating(workshop.id);
   const citySlug = getWorkshopCity(slug, workshop.region);
@@ -61,8 +63,14 @@ export default async function WorkshopDetailPage({ params }: PageProps) {
 
         <header className="mt-8">
           <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-brand-600">
-            {cityLine} · {extra.category}
+            {cityLine}
+            {editorial ? ` · ${editorial.mood}` : ` · ${extra.category}`}
           </p>
+          {editorial?.tagline && (
+            <p className="mt-3 max-w-2xl text-lg leading-relaxed text-muted">
+              {editorial.tagline}
+            </p>
+          )}
           <h1 className="mt-2 font-display text-3xl font-bold text-ink sm:text-4xl">
             {workshop.title}
           </h1>
