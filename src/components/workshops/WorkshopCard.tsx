@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { Workshop } from "@/types";
+import { WorkshopCover } from "@/components/workshops/WorkshopCover";
 import { cityLabel, getWorkshopCity } from "@/lib/cities";
 import { formatPrice } from "@/lib/format";
 import {
@@ -24,13 +24,10 @@ export function WorkshopCard({ workshop }: WorkshopCardProps) {
     <Link href={`/workshops/${workshop.slug}`} className="card-minglu group block">
       <div className={`relative aspect-[5/4] ${pastel} overflow-hidden`}>
         <div className="absolute inset-3 overflow-hidden rounded-lg shadow-soft">
-          <Image
-            src={workshop.image_url}
-            alt={workshop.title}
-            fill
-            unoptimized={workshop.image_url.endsWith(".svg")}
-            className="object-cover transition duration-500 group-hover:scale-105"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+          <WorkshopCover
+            slug={workshop.slug}
+            title={workshop.title}
+            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
           />
         </div>
         <span className="absolute right-4 top-4 text-3xl opacity-90 drop-shadow-sm">

@@ -6,6 +6,17 @@ import {
   getMockSession,
 } from "@/lib/data/mock-workshops";
 import type { Workshop, WorkshopWithSessions, WorkshopSession } from "@/types";
+import { workshopCoverPath } from "@/lib/workshop-meta";
+
+function withLocalCover(workshop: Workshop): Workshop {
+  const local = workshopCoverPath(workshop.slug);
+  const useLocal =
+    workshop.image_url.startsWith("/") ||
+    workshop.image_url.includes("unsplash.com") ||
+    workshop.image_url.endsWith(".svg");
+
+  return useLocal ? { ...workshop, image_url: local } : workshop;
+}
 
 function filterByCity(workshops: Workshop[], city: string): Workshop[] {
   if (!isCitySlug(city)) return workshops;
@@ -36,7 +47,7 @@ export async function getWorkshops(
   if (error || !data?.length) {
     workshops = getMockWorkshops(region, city);
   } else {
-    workshops = data as Workshop[];
+    workshops = (data as Workshop[]).map(withLocalCover);
     if (city) {
       workshops = filterByCity(workshops, city);
     }
@@ -78,7 +89,7 @@ export async function getWorkshopBySlug(
     .order("starts_at", { ascending: true });
 
   return {
-    ...(workshop as Workshop),
+    ...withLocalCover(workshop as Workshop),
     sessions: (sessions ?? []) as WorkshopSession[],
   };
 }
