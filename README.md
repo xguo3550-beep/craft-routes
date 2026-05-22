@@ -10,7 +10,7 @@ Built with **Next.js 13** (App Router), **Tailwind CSS**, **Supabase**, and **St
 
 - Browse workshops by region (Dali / Sichuan)
 - Workshop detail pages with gallery, host info, and upcoming sessions
-- Full booking flow with guest details and Stripe Checkout
+- Full booking flow with guest details, Stripe Checkout, and **Resend** confirmation emails
 - Mock data fallback when Supabase is not configured (works out of the box)
 - Mobile-responsive design
 
@@ -35,6 +35,22 @@ Open [http://localhost:3000](http://localhost:3000). Without env vars, the app u
 | `STRIPE_SECRET_KEY` | Stripe secret key |
 | `STRIPE_WEBHOOK_SECRET` | Stripe webhook signing secret |
 | `NEXT_PUBLIC_APP_URL` | App URL (e.g. `http://localhost:3000`) |
+| `RESEND_API_KEY` | [Resend](https://resend.com) API key for confirmation emails |
+| `EMAIL_FROM` | Sender address (e.g. `Craft Routes <bookings@yourdomain.com>`) |
+
+## Confirmation emails (Resend)
+
+1. Create a free account at [resend.com](https://resend.com)
+2. Create an API key → add to `.env.local` as `RESEND_API_KEY`
+3. For **local testing**, use:
+   ```
+   EMAIL_FROM=Craft Routes <onboarding@resend.dev>
+   ```
+   Resend’s test sender only delivers to **the email on your Resend account**.
+4. For **production**, verify your domain in Resend and set `EMAIL_FROM` to that domain.
+5. Add the same variables in **Vercel → Settings → Environment Variables**, then redeploy.
+
+The success page only says “email sent” when Resend actually succeeds.
 
 ## Supabase setup
 

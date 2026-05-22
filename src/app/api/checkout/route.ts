@@ -2,6 +2,16 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSessionWithWorkshop } from "@/lib/data/workshops";
 import { getStripe } from "@/lib/stripe";
 import { createServerClient } from "@/lib/supabase/server";
+import { buildBookingEmailDetails } from "@/lib/email/build-booking-email";
+import { sendBookingConfirmationEmail } from "@/lib/email/send-booking-confirmation";
+
+function successUrl(
+  appUrl: string,
+  params: Record<string, string>
+): string {
+  const qs = new URLSearchParams(params).toString();
+  return `${appUrl}/booking/success?${qs}`;
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -63,10 +73,33 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    const emailDetails = buildBookingEmailDetails({
+      bookingId,
+      guestName,
+      guestEmail,
+      guestsCount: Number(guestsCount),
+      workshop,
+      session,
+      appUrl,
+      paid: false,
+    });
+
     if (!stripe) {
+      const emailResult = await sendBookingConfirmationEmail(emailDetails);
+
       return NextResponse.json({
         bookingId,
-        url: `${appUrl}/booking/success?booking_id=${bookingId}`,
+        emailSent: emailResult.sent,
+        emailError: emailResult.error,
+        url: successUrl(appUrl, {
+          booking_id: bookingId,
+          email: guestEmail,
+          email_sent: emailResult.sent ? "true" : "false",
+          payment: "demo",
+          session_id: sessionId,
+          guest_name: guestName,
+          guests_count: String(guestsCount),
+        }),
       });
     }
 
@@ -92,8 +125,16 @@ export async function POST(request: NextRequest) {
         session_id: sessionId,
         workshop_id: workshop.id,
         guests_count: String(guestsCount),
+        guest_name: guestName,
       },
-      success_url: `${appUrl}/booking/success?session_id={CHECKOUT_SESSION_ID}&booking_id=${bookingId}`,
+      success_url: successUrl(appUrl, {
+        booking_id: bookingId,
+        email: guestEmail,
+        payment: "stripe",
+        session_id: sessionId,
+        guest_name: guestName,
+        guests_count: String(guestsCount),
+      }),
       cancel_url: `${appUrl}/workshops/${workshop.slug}`,
     });
 

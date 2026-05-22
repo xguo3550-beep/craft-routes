@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import type { Workshop, WorkshopSession } from "@/types";
 import { formatDate, formatPrice, formatTime } from "@/lib/format";
 
@@ -16,7 +15,6 @@ export function BookingForm({
   sessions,
   preselectedSessionId,
 }: BookingFormProps) {
-  const router = useRouter();
   const [sessionId, setSessionId] = useState(
     preselectedSessionId ?? sessions[0]?.id ?? ""
   );
@@ -59,8 +57,6 @@ export function BookingForm({
         window.location.href = data.url;
         return;
       }
-
-      router.push(`/booking/success?booking_id=${data.bookingId}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {

@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getStripe } from "@/lib/stripe";
 import { createServerClient } from "@/lib/supabase/server";
+import { getSessionWithWorkshop } from "@/lib/data/workshops";
+import { buildBookingEmailDetails } from "@/lib/email/build-booking-email";
+import { sendBookingConfirmationEmail } from "@/lib/email/send-booking-confirmation";
 import Stripe from "stripe";
 
 export async function POST(request: NextRequest) {
@@ -30,11 +33,24 @@ export async function POST(request: NextRequest) {
   }
 
   const supabase = createServerClient();
+  const appUrl =
+    process.env.NEXT_PUBLIC_APP_URL ??
+    (process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : "http://localhost:3000");
 
   if (event.type === "checkout.session.completed") {
-    const session = event.data.object as Stripe.Checkout.Session;
-    const bookingId = session.metadata?.booking_id;
-    const sessionId = session.metadata?.session_id;
+    const checkoutSession = event.data.object as Stripe.Checkout.Session;
+    const bookingId = checkoutSession.metadata?.booking_id;
+    const sessionId = checkoutSession.metadata?.session_id;
+    const guestName = checkoutSession.metadata?.guest_name ?? "Guest";
+    const guestEmail =
+      checkoutSession.customer_email ??
+      checkoutSession.customer_details?.email;
+    const guestsCount = parseInt(
+      checkoutSession.metadata?.guests_count ?? "1",
+      10
+    );
 
     if (supabase && bookingId) {
       await supabase
@@ -42,9 +58,9 @@ export async function POST(request: NextRequest) {
         .update({
           status: "paid",
           stripe_payment_intent_id:
-            typeof session.payment_intent === "string"
-              ? session.payment_intent
-              : session.payment_intent?.id ?? null,
+            typeof checkoutSession.payment_intent === "string"
+              ? checkoutSession.payment_intent
+              : checkoutSession.payment_intent?.id ?? null,
           updated_at: new Date().toISOString(),
         })
         .eq("id", bookingId);
@@ -52,15 +68,11 @@ export async function POST(request: NextRequest) {
       if (sessionId) {
         const { data: workshopSession } = await supabase
           .from("workshop_sessions")
-          .select("spots_available, guests_count:bookings(guests_count)")
+          .select("spots_available")
           .eq("id", sessionId)
           .single();
 
         if (workshopSession) {
-          const guestsCount = parseInt(
-            session.metadata?.guests_count ?? "1",
-            10
-          );
           await supabase
             .from("workshop_sessions")
             .update({
@@ -71,6 +83,24 @@ export async function POST(request: NextRequest) {
             })
             .eq("id", sessionId);
         }
+      }
+    }
+
+    if (sessionId && guestEmail && bookingId) {
+      const sessionData = await getSessionWithWorkshop(sessionId);
+      if (sessionData) {
+        const { workshop, ...session } = sessionData;
+        const details = buildBookingEmailDetails({
+          bookingId,
+          guestName,
+          guestEmail,
+          guestsCount,
+          workshop,
+          session,
+          appUrl,
+          paid: true,
+        });
+        await sendBookingConfirmationEmail(details);
       }
     }
   }
